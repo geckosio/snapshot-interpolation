@@ -27,13 +27,13 @@ test('initialize with server fps', () => {
 })
 
 test('calc interpolated without any data', () => {
-  interpolatedSnapshot = SI.calcInterpolation('x y')
+  interpolatedSnapshot = SI.calcInterpolation('x y r(deg)')
   expect(interpolatedSnapshot).toBeNull()
 })
 
 test('should create and add snapshot', async done => {
   await delay()
-  snapshot = SI.snapshot.create([{ x: 0, y: 0 }])
+  snapshot = SI.snapshot.create([{ x: 0, y: 0, r: 0 }])
   id1 = snapshot.id
   SI.snapshot.add(snapshot)
   expect(snapshot).not.toBeUndefined()
@@ -42,7 +42,7 @@ test('should create and add snapshot', async done => {
 
 test('calc interpolated with not enough data', async () => {
   await delay()
-  interpolatedSnapshot = SI.calcInterpolation('x y')
+  interpolatedSnapshot = SI.calcInterpolation('x y r(deg)')
   expect(interpolatedSnapshot).toBeNull()
 })
 
@@ -61,13 +61,13 @@ test('getting latest snapshot should have same id', () => {
 
 test('worldState should be an array', () => {
   expect(() => {
-    SI.snapshot.create({ x: 10, y: 10 })
+    SI.snapshot.create({ x: 10, y: 10, r: 10 })
   }).toThrow()
 })
 
 test('should create and add another snapshot', async done => {
   await delay()
-  snapshot = SI.snapshot.create([{ x: 10, y: 10 }])
+  snapshot = SI.snapshot.create([{ x: 10, y: 10, r: 10 }])
   id2 = snapshot.id
   SI.snapshot.add(snapshot)
   expect(SI.vault.size).toBe(2)
@@ -75,8 +75,19 @@ test('should create and add another snapshot', async done => {
 })
 
 test('should get interpolated value', () => {
-  interpolatedSnapshot = SI.calcInterpolation('x y')
+  interpolatedSnapshot = SI.calcInterpolation('x y r(deg)')
   expect(interpolatedSnapshot).not.toBeNull()
+})
+
+test('can not interpolated unknown method', () => {
+  expect(() => {
+    SI.calcInterpolation('x y r(mojito)')
+  }).toThrow()
+})
+
+test('interpolate the value p, that is not there', () => {
+  const snap = SI.calcInterpolation('x y r(deg) p')
+  expect(snap.state[0].p).toBeNaN()
 })
 
 test('should have same id as original snapshots', () => {

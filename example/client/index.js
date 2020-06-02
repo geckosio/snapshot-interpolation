@@ -135,12 +135,12 @@ const loop = () => {
   clientPrediction()
   serverReconciliation()
 
-  const snapshot = SI.calcInterpolation('x y') // interpolated
+  const snapshot = SI.calcInterpolation('x y r(deg)') // interpolated
   // const snapshot = SI.vault.get() // latest
   if (snapshot) {
     const { state } = snapshot
     state.forEach(s => {
-      const { playerId, x, y } = s
+      const { playerId, x, y, r } = s
       // update player
       if (players.has(playerId)) {
         // do not update our own player (if we use clientPrediction and serverReconciliation)

@@ -1,6 +1,6 @@
 import { Snapshot, InterpolatedSnapshot, Time } from './types'
 import { Vault } from './vault'
-import { lerp } from './lerp'
+import { lerp, lerpDegrees } from './lerp'
 
 /** A Snapshot Interpolation library. */
 export class SnapshotInterpolation {
@@ -68,7 +68,7 @@ export class SnapshotInterpolation {
       // by subtracting the current client date from the server time of the
       // first snapshot
       this._timeOffset = SnapshotInterpolation.Now() - snapshot.time
-      console.log('ServerTime offset is ', this._timeOffset)
+      // console.log('ServerTime offset is ', this._timeOffset)
     }
 
     this.vault.add(snapshot)
@@ -119,14 +119,23 @@ export class SnapshotInterpolation {
 
     let tmpSnapshot: Snapshot = JSON.parse(JSON.stringify(newer))
 
+    const lerpFnc = (method: string, start: number, end: number, t: number) => {
+      if (method === 'normal') return lerp(start, end, t)
+      else if (method === 'deg') return lerpDegrees(start, end, t)
+      else throw new Error(`No lerp method "${method}" found!`)
+    }
+
     newer.state.forEach((_d: any, i: number) => {
       params.forEach(p => {
-        try {
-          const p0 = newer.state[i][p]
-          const p1 = older.state[i][p]
-          const pn = lerp(p1, p0, pPercent)
-          tmpSnapshot.state[i][p] = pn
-        } catch {}
+        // TODO yandeu: improve this code
+        const match = p.match(/\w\(([\w]+)\)/)
+        const lerpMethod = match ? match?.[1] : 'normal'
+        if (match) p = match?.[0].replace(/\([\S]+$/gm, '')
+
+        const p0 = newer.state[i]?.[p]
+        const p1 = older.state[i]?.[p]
+        const pn = lerpFnc(lerpMethod, p1, p0, pPercent)
+        tmpSnapshot.state[i][p] = pn
       })
     })
 

@@ -23,7 +23,11 @@ const collisionDetection = (rect1, rect2) => {
 }
 
 io.onConnection(channel => {
-  players.set(channel.id, { x: Math.random() * 500, y: Math.random() * 500 })
+  players.set(channel.id, {
+    x: Math.random() * 500,
+    y: Math.random() * 500,
+    r: 0,
+  })
 
   channel.onDisconnect(() => {
     if (players.has(channel.id)) players.delete(channel.id)
@@ -75,6 +79,8 @@ const loop = () => {
   players.forEach(player => {
     if (player.vx) player.x += player.vx * speed
     if (player.vy) player.y += player.vy * speed
+    player.r += 1.268
+    player.r = player.r % 360
   })
 
   // send state on every 4th frame
@@ -85,6 +91,7 @@ const loop = () => {
         playerId: key,
         x: player.x,
         y: player.y,
+        r: player.r,
       })
     })
 

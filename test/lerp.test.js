@@ -25,6 +25,7 @@ test('lerpRadians should be ~-Math.PI / 16', () => {
   const res = (-Math.PI / 16).toFixed(4)
   expect(rad).toBe(res)
 })
+
 test('lerpRadians should be ~-Math.PI / 16', () => {
   const rad = lerpRadians(3 * Math.PI, (Math.PI * 3) / 2, 0.5).toFixed(4)
   const res = ((Math.PI / 4) * 5).toFixed(4)
