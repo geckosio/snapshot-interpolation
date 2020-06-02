@@ -11,35 +11,38 @@
 
 </div>
 
-Also called Entity Interpolation.
+Easily add **Snapshot Interpolation** (also called **Entity Interpolation** or **Buffer Interpolation**)
 
 The Interpolation Buffer is by default "latency + 3 serverFrames" long (Interpolation between 4 Snapshots).
 So if the **latency is 30ms** and the **ServerFrame is 16ms**, the Interpolation Buffer would be 78ms long.
-See [this video](https://youtu.be/Z9X4lysFr64?t=800).
 
-Easily includes Client-Side Prediction and **Server Reconciliation** using the Snapshot vault.
+If you are interested to learn a bit about Snapshot Interpolation, watch [this video](https://youtu.be/Z9X4lysFr64?t=800).
 
-Easily includes Lag Compensation
+- Easily add **Client-Side Prediction** and **Server Reconciliation**.
+- Easily add **Lag Compensation**.
+- Easily **compress/encode** your snapshots before sending/receiving.
 
-Does not compress/encode the data. But you can easily do it yourself.
+## Full Game Example
 
-## Example
-
-The [github repository](https://github.com/geckosio/snapshot-interpolation) contains a nice example:
+The [github repository](https://github.com/geckosio/snapshot-interpolation) contains a nice example. Take a look!
 
 ```bash
+# clone the repo
 $ git clone https://github.com/geckosio/snapshot-interpolation.git
 
+# cd into it
 $ cd snapshot-interpolation
 
+# install all dependencies
 $ npm install
 
+# start the example
 $ npm start
 ```
 
-## Usage
+## How to use
 
-#### server.js
+### server.js
 
 ```js
 // initialize the library (add your server's fps in milliseconds)
@@ -58,7 +61,7 @@ update() {
 }
 ```
 
-#### client.js
+### client.js
 
 ```js
 // initialize the library
@@ -101,4 +104,4 @@ const worldState = [
 
 ## Compression
 
-You can compress the snapshots manually before sending them to the client, and decompress them when when the client receives them.
+You can compress the snapshots manually before sending them to the client, and decompress them when the client receives them. No, compression library is included. You have the freedom to do it however it suits your game best.
