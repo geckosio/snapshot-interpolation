@@ -26,6 +26,11 @@ test('initialize with server fps', () => {
   expect(buffer).toBe(150)
 })
 
+test('calc interpolated without any data', () => {
+  interpolatedSnapshot = SI.calcInterpolation('x y')
+  expect(interpolatedSnapshot).toBeNull()
+})
+
 test('should create and add snapshot', async done => {
   await delay()
   snapshot = SI.snapshot.create([{ x: 0, y: 0 }])
@@ -33,6 +38,12 @@ test('should create and add snapshot', async done => {
   SI.snapshot.add(snapshot)
   expect(snapshot).not.toBeUndefined()
   done()
+})
+
+test('calc interpolated with not enough data', async () => {
+  await delay()
+  interpolatedSnapshot = SI.calcInterpolation('x y')
+  expect(interpolatedSnapshot).toBeNull()
 })
 
 test('snapshot id should be 6 chars long', () => {
@@ -83,4 +94,10 @@ test('values should be interpolated', () => {
 test('timeOffset should >= 0', () => {
   const timeOffset = SI.timeOffset
   expect(timeOffset >= 0).toBeTruthy()
+})
+
+test('custom interpolation', () => {
+  const shots = SI.vault.get(new Date().getTime() - 50)
+  const interpolated = SI.interpolate(shots.older, shots.newer, 0.5, 'x y')
+  expect(interpolated.percentage).toBe(0.5)
 })
