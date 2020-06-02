@@ -22,7 +22,7 @@ If you are interested to learn a bit about Snapshot Interpolation, watch [this v
 - Easily add **Lag Compensation**.
 - Easily **compress/encode** your snapshots before sending/receiving.
 
-## Full Game Example
+## Game Example
 
 The [github repository](https://github.com/geckosio/snapshot-interpolation) contains a nice example. Take a look!
 
@@ -100,6 +100,16 @@ const worldState = [
   { id: 'heroRed', x: 23, y: 14, z: 47 },
   { id: 'heroGreen', x: 23, y: 14, z: 47 },
 ]
+```
+
+## Vault
+
+The Vault holds and secures all your Snapshots. Each SnapshotInterpolation instance holds one Vault, but you can easily create more if you need:
+
+```js
+import { Vault } from '@geckos.io/snapshot-interpolation'
+
+const customVault = new Vault()
 ```
 
 ## Compression
