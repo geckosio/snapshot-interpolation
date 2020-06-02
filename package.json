@@ -1,0 +1,56 @@
+{
+  "name": "snapshot-interpolation",
+  "version": "0.0.1",
+  "description": "A Snapshot Interpolation library for Real-Time Multiplayer Games.",
+  "main": "lib/index.js",
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "npm-run-all --parallel tsc:watch example:*",
+    "example:server": "nodemon example/server/index.js",
+    "example:client": "webpack-dev-server",
+    "tsc:watch": "tsc --watch",
+    "test": "jest --collectCoverage",
+    "build": "rimraf lib && tsc"
+  },
+  "keywords": [
+    "multiplayer",
+    "game",
+    "network",
+    "snapshot",
+    "entity",
+    "buffer",
+    "interpolation",
+    "client-side",
+    "prediction",
+    "server",
+    "reconciliation",
+    "lag",
+    "compensation"
+  ],
+  "author": "Yannick Deubel (https://github.com/yandeu)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/geckosio/snapshot-interpolation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/geckosio/snapshot-interpolation/issues"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@geckos.io/client": "^1.4.3",
+    "@geckos.io/server": "^1.4.3",
+    "html-webpack-plugin": "^4.3.0",
+    "jest": "^26.0.1",
+    "nodemon": "^2.0.3",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2",
+    "typescript": "^3.9.2",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "funding": {
+    "url": "https://github.com/sponsors/yandeu"
+  }
+}
