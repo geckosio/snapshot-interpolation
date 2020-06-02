@@ -4,6 +4,8 @@
 
 ## A Snapshot Interpolation library for Real-Time Multiplayer Games
 
+#### Easily add Snapshot Interpolation (also called Entity Interpolation or Buffer Interpolation) to your Games.
+
 [![NPM version](https://img.shields.io/npm/v/@geckos.io/snapshot-interpolation.svg?style=flat-square)](https://www.npmjs.com/package/@geckos.io/snapshot-interpolation)
 [![Github Workflow](https://img.shields.io/github/workflow/status/geckosio/snapshot-interpolation/CI/master?label=github%20build&logo=github&style=flat-square)](https://github.com/geckosio/snapshot-interpolation/actions?query=workflow%3ACI)
 [![Downloads](https://img.shields.io/npm/dm/@geckos.io/snapshot-interpolation.svg?style=flat-square)](https://www.npmjs.com/package/@geckos.io/snapshot-interpolation)
@@ -11,7 +13,9 @@
 
 </div>
 
-Easily add **Snapshot Interpolation** (also called **Entity Interpolation** or **Buffer Interpolation**)
+---
+
+## About
 
 The Interpolation Buffer is by default "latency + 3 serverFrames" long (Interpolation between 4 Snapshots).
 So if the **latency is 30ms** and the **ServerFrame is 16ms**, the Interpolation Buffer would be 78ms long.
@@ -24,7 +28,8 @@ If you are interested to learn a bit about Snapshot Interpolation, watch [this v
 
 ## Game Example
 
-The [github repository](https://github.com/geckosio/snapshot-interpolation) contains a nice example. Take a look!
+The [github repository](https://github.com/geckosio/snapshot-interpolation) contains a nice example. Take a look!  
+_I will create a video in the future that examples the example_
 
 ```bash
 # clone the repo
@@ -45,6 +50,9 @@ $ npm start
 ### server.js
 
 ```js
+// import @geckos.io/snapshot-interpolation
+import { SnapshotInterpolation } from '@geckos.io/snapshot-interpolation'
+
 // initialize the library (add your server's fps in milliseconds)
 const SI = new SnapshotInterpolation(serverFPS)
 
@@ -64,6 +72,9 @@ update() {
 ### client.js
 
 ```js
+// import @geckos.io/snapshot-interpolation
+import { SnapshotInterpolation } from '@geckos.io/snapshot-interpolation'
+
 // initialize the library
 const SI = new SnapshotInterpolation()
 
