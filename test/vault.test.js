@@ -1,10 +1,24 @@
 const { Vault, SnapshotInterpolation } = require('../lib/index')
 
 const vault = new Vault()
+const tick = 1000 / 20
 let snapshotId
+
+const delay = () => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve()
+    }, tick)
+  })
+}
 
 test('empty vault size should be 0', () => {
   expect(vault.size).toBe(0)
+})
+
+test('get a snapshot that does not yet exist', () => {
+  const shot = vault.get(new Date().getTime() - tick * 3, true)
+  expect(shot).toBeNull()
 })
 
 test('max vault size should be 120', () => {
@@ -16,16 +30,18 @@ test('max vault size should be increased to 180', () => {
   expect(vault.getMaxSize()).toBe(180)
 })
 
-test('add a snapshot to the vault', () => {
+test('add a snapshot to the vault', async done => {
+  await delay()
   const snapshot = SnapshotInterpolation.CreateSnapshot([{ x: 10, y: 10 }])
   snapshotId = snapshot.id
   vault.add(snapshot)
   expect(vault.size).toBe(1)
+  done()
 })
 
 test('decrease max vault size', () => {
-  vault.setMaxSize(1)
-  expect(vault.getMaxSize()).toBe(1)
+  vault.setMaxSize(2)
+  expect(vault.getMaxSize()).toBe(2)
 })
 
 test('get a snapshot by its id', () => {
@@ -33,8 +49,23 @@ test('get a snapshot by its id', () => {
   expect(snapshot.id).toBe(snapshotId)
 })
 
-test('add a second snapshot to the vault', () => {
-  const snapshot = SnapshotInterpolation.CreateSnapshot([{ x: 20, y: 20 }])
-  vault.add(snapshot)
-  expect(vault.size).toBe(1)
+test('add more snapshots to the vault', async done => {
+  vault.setMaxSize(4)
+  await delay()
+  vault.add(SnapshotInterpolation.CreateSnapshot([{ x: 20, y: 20 }]))
+  await delay()
+  vault.add(SnapshotInterpolation.CreateSnapshot([{ x: 30, y: 30 }]))
+  await delay()
+  vault.add(SnapshotInterpolation.CreateSnapshot([{ x: 40, y: 40 }]))
+  await delay()
+  vault.add(SnapshotInterpolation.CreateSnapshot([{ x: 50, y: 50 }]))
+  expect(vault.size).toBe(4)
+  done()
+})
+
+test('get some closest snapshot to a specific time', () => {
+  const shot1 = vault.get(new Date().getTime() - tick * 3 + 10, true)
+  const shot2 = vault.get(new Date().getTime() - tick * 3 + 20, true)
+  const shot3 = vault.get(new Date().getTime() - tick * 3 + 30, true)
+  expect(shot1.id.length + shot2.id.length + shot3.id.length).toBe(18)
 })
