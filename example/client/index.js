@@ -77,7 +77,10 @@ const serverReconciliation = () => {
     // get the latest snapshot from the server
     const serverSnapshot = SI.vault.get()
     // get the closest player snapshot that matches the server snapshot time
-    const playerSnapshot = playerVault.get(serverSnapshot.time, true)
+    const tmp = playerVault.get(serverSnapshot.time, true)
+    if (!tmp) return
+
+    const playerSnapshot = tmp[0]
 
     if (serverSnapshot && playerSnapshot) {
       // get the current player position on the server
@@ -112,7 +115,7 @@ const clientPrediction = () => {
     if (up) player.y -= speed
     if (right) player.x += speed
     if (down) player.y += speed
-    playerVault.add(SI.createSnapshot({ x: player.x, y: player.y }))
+    playerVault.add(SI.snapshot.create([{ x: player.x, y: player.y }]))
   }
 }
 

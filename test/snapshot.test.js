@@ -13,9 +13,9 @@ test('should be initialized', () => {
 
 test('should create and add snapshot', done => {
   setTimeout(() => {
-    snapshot = SI.createSnapshot([{ x: 0, y: 0 }])
+    snapshot = SI.snapshot.create([{ x: 0, y: 0 }])
     id1 = snapshot.id
-    SI.addSnapshot(snapshot)
+    SI.snapshot.add(snapshot)
     expect(snapshot).not.toBeUndefined()
     done()
   }, 1000 / 20)
@@ -36,9 +36,9 @@ test('getting latest snapshot should have same id', () => {
 
 test('should create and add another snapshot', done => {
   setTimeout(() => {
-    snapshot = SI.createSnapshot([{ x: 10, y: 10 }])
+    snapshot = SI.snapshot.create([{ x: 10, y: 10 }])
     id2 = snapshot.id
-    SI.addSnapshot(snapshot)
+    SI.snapshot.add(snapshot)
     expect(SI.vault.size).toBe(2)
     done()
   }, 1000 / 20)

@@ -25,7 +25,7 @@ export class SnapshotInterpolation {
   }
 
   /** Get the current time in milliseconds. */
-  public get now() {
+  public static Now() {
     return Date.now() // - Date.parse('01 Jan 2020')
   }
 
@@ -34,7 +34,7 @@ export class SnapshotInterpolation {
     return this._timeOffset
   }
 
-  private newId() {
+  public static NewId() {
     return Math.random()
       .toString(36)
       .substr(2, 6)
@@ -43,19 +43,20 @@ export class SnapshotInterpolation {
   public get snapshot() {
     return {
       /** Create the snapshot on the server. */
-      create: (state: any[]): Snapshot => this.createSnapshot(state),
+      create: (state: any[]): Snapshot =>
+        SnapshotInterpolation.CreateSnapshot(state),
       /** Add the snapshot you received from the server to automatically calculate the interpolation with calcInterpolation() */
       add: (snapshot: Snapshot): void => this.addSnapshot(snapshot),
     }
   }
 
-  private createSnapshot(state: any[]): Snapshot {
+  public static CreateSnapshot(state: any[]): Snapshot {
     if (!Array.isArray(state))
       throw new Error('You have to pass an Array to createSnapshot()')
 
     return {
-      id: this.newId(),
-      time: this.now, // + 50804, // simulate that the server time is not in sync with client time
+      id: SnapshotInterpolation.NewId(),
+      time: SnapshotInterpolation.Now(),
       state: state,
     }
   }
@@ -65,7 +66,7 @@ export class SnapshotInterpolation {
       // the time offset between server and client is calculated,
       // by subtracting the current client date from the server time of the
       // first snapshot
-      this._timeOffset = this.now - snapshot.time
+      this._timeOffset = SnapshotInterpolation.Now() - snapshot.time
       console.log('ServerTime offset is ', this._timeOffset)
     }
 
@@ -145,7 +146,8 @@ export class SnapshotInterpolation {
   /** Get the calculated interpolation on the client. */
   public calcInterpolation(parameters: string): InterpolatedSnapshot | null {
     // get the snapshots [this._interpolationBuffer] ago
-    const serverTime = this.now - this._timeOffset - this._interpolationBuffer
+    const serverTime =
+      SnapshotInterpolation.Now() - this._timeOffset - this._interpolationBuffer
     const shots = this.vault.get(serverTime)
     if (!shots) return null
 
