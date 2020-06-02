@@ -1,5 +1,6 @@
 import { Snapshot, InterpolatedSnapshot, Time } from './types'
 import { Vault } from './vault'
+import { lerp } from './lerp'
 
 /** A Snapshot Interpolation library. */
 export class SnapshotInterpolation {
@@ -113,10 +114,6 @@ export class SnapshotInterpolation {
     const hundredPercent = t0 - t1
     const pPercent =
       timeOrPercentage <= 1 ? timeOrPercentage : zeroPercent / hundredPercent
-
-    const lerp = (start: number, end: number, t: number) => {
-      return start + (end - start) * t
-    }
 
     this.serverTime = lerp(t1, t0, pPercent)
 
