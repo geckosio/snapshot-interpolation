@@ -1,7 +1,7 @@
 {
-  "name": "snapshot-interpolation",
+  "name": "@geckos.io/snapshot-interpolation",
   "version": "0.0.1",
-  "description": "A Snapshot Interpolation library for Real-Time Multiplayer Games.",
+  "description": "A Snapshot Interpolation library for Real-Time Multiplayer Games",
   "main": "lib/index.js",
   "scripts": {
     "start": "npm run dev",
