@@ -10,7 +10,8 @@
     "example:client": "webpack-dev-server",
     "tsc:watch": "tsc --watch",
     "test": "jest --collectCoverage",
-    "build": "rimraf lib && tsc"
+    "build": "rimraf lib && tsc",
+    "prepublish": "npm run build"
   },
   "keywords": [
     "multiplayer",
