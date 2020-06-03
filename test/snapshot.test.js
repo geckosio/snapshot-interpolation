@@ -28,7 +28,7 @@ test('initialize with server fps', () => {
 
 test('calc interpolated without any data', () => {
   interpolatedSnapshot = SI.calcInterpolation('x y d(deg) r(rad) q(quat)')
-  expect(interpolatedSnapshot).toBeNull()
+  expect(interpolatedSnapshot).toBeUndefined()
 })
 
 test('should create and add snapshot', async done => {
@@ -45,7 +45,7 @@ test('should create and add snapshot', async done => {
 test('calc interpolated with not enough data', async () => {
   await delay()
   interpolatedSnapshot = SI.calcInterpolation('x y d(deg) r(rad) q(quat)')
-  expect(interpolatedSnapshot).toBeNull()
+  expect(interpolatedSnapshot).toBeUndefined()
 })
 
 test('snapshot id should be 6 chars long', () => {
@@ -92,7 +92,7 @@ test('should create and add another snapshot', async done => {
 
 test('should get interpolated value', () => {
   interpolatedSnapshot = SI.calcInterpolation('x y d(deg) r(rad) q(quat)')
-  expect(interpolatedSnapshot).not.toBeNull()
+  expect(interpolatedSnapshot).not.toBeUndefined()
 })
 
 test('can not interpolated unknown method', () => {
@@ -103,7 +103,7 @@ test('can not interpolated unknown method', () => {
 
 test('interpolate the value p, that is not there', () => {
   const snap = SI.calcInterpolation('x y d(deg) p')
-  expect(snap.state[0].p).toBeNull()
+  expect(snap.state[0].p).toBeUndefined()
 })
 
 test('should have same id as original snapshots', () => {

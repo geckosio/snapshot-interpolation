@@ -1,6 +1,12 @@
+export type Value = number | string | Quat | undefined
+
+export interface Entity {
+  [key: string]: Value
+}
+
 export type ID = string
 export type Time = number
-export type State = any[]
+export type State = Entity[]
 
 export interface Snapshot {
   id: ID

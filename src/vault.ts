@@ -11,11 +11,11 @@ export class Vault {
   }
 
   /** Get the latest snapshot */
-  get(): Snapshot | null
+  get(): Snapshot | undefined
   /** Get the two snapshots around a specific time */
-  get(time: number): { older: Snapshot; newer: Snapshot } | null
+  get(time: number): { older: Snapshot; newer: Snapshot } | undefined
   /** Get the closest snapshot to e specific time */
-  get(time: number, closest: boolean): Snapshot | null
+  get(time: number, closest: boolean): Snapshot | undefined
 
   get(time?: number, closest?: boolean) {
     // zero index is the newest snapshot
@@ -35,7 +35,7 @@ export class Vault {
         return snaps
       }
     }
-    return null
+    return
   }
 
   /** Add a snapshot to the vault. */

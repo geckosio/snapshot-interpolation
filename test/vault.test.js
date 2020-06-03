@@ -18,7 +18,7 @@ test('empty vault size should be 0', () => {
 
 test('get a snapshot that does not yet exist', () => {
   const shot = vault.get(new Date().getTime() - tick * 3, true)
-  expect(shot).toBeNull()
+  expect(shot).toBeUndefined()
 })
 
 test('max vault size should be 120', () => {

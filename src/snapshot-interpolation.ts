@@ -1,4 +1,4 @@
-import { Snapshot, InterpolatedSnapshot, Time, Quat } from './types'
+import { Snapshot, InterpolatedSnapshot, Time, Value } from './types'
 import { Vault } from './vault'
 import { lerp, degreeLerp, quatSlerp, radianLerp } from './lerp'
 
@@ -122,14 +122,10 @@ export class SnapshotInterpolation {
 
     let tmpSnapshot: Snapshot = JSON.parse(JSON.stringify(newer))
 
-    const lerpFnc = (
-      method: string,
-      start: number | Quat | undefined,
-      end: number | Quat | undefined,
-      t: number
-    ) => {
-      if (typeof start === 'undefined' || typeof end === 'undefined')
-        return null
+    const lerpFnc = (method: string, start: Value, end: Value, t: number) => {
+      if (typeof start === 'undefined' || typeof end === 'undefined') return
+
+      if (typeof start === 'string' || typeof end === 'string') return
 
       if (typeof start === 'number' && typeof end === 'number') {
         if (method === 'linear') return lerp(start, end, t)
@@ -137,7 +133,7 @@ export class SnapshotInterpolation {
         else if (method === 'rad') return radianLerp(start, end, t)
       }
 
-      if (typeof start !== 'number' && typeof end !== 'number') {
+      if (typeof start === 'object' && typeof end === 'object') {
         if (method === 'quat') return quatSlerp(start, end, t)
       }
 
@@ -151,8 +147,9 @@ export class SnapshotInterpolation {
         const lerpMethod = match ? match?.[1] : 'linear'
         if (match) p = match?.[0].replace(/\([\S]+$/gm, '')
 
-        const p0: number | Quat | undefined = newer.state[i]?.[p]
-        const p1: number | Quat | undefined = older.state[i]?.[p]
+        const p0 = newer.state[i]?.[p]
+        const p1 = older.state[i]?.[p]
+
         const pn = lerpFnc(lerpMethod, p1, p0, pPercent)
         tmpSnapshot.state[i][p] = pn
       })
@@ -169,15 +166,17 @@ export class SnapshotInterpolation {
   }
 
   /** Get the calculated interpolation on the client. */
-  public calcInterpolation(parameters: string): InterpolatedSnapshot | null {
+  public calcInterpolation(
+    parameters: string
+  ): InterpolatedSnapshot | undefined {
     // get the snapshots [this._interpolationBuffer] ago
     const serverTime =
       SnapshotInterpolation.Now() - this._timeOffset - this._interpolationBuffer
     const shots = this.vault.get(serverTime)
-    if (!shots) return null
+    if (!shots) return
 
     const { older, newer } = shots
-    if (!older || !newer) return null
+    if (!older || !newer) return
 
     return this._interpolate(newer, older, serverTime, parameters)
   }
