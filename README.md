@@ -156,7 +156,7 @@ You can compress the snapshots manually before sending them to the client, and d
 
 ## API
 
-This look very TypeScriptisch, but you can of course use in in JavaScript as well.
+This looks very TypeScriptisch, but you can of course use it in JavaScript as well.
 
 ```ts
 // import
@@ -186,7 +186,7 @@ interface InterpolatedSnapshot extends Omit<Snapshot, 'id' | 'time'> {
 
 // static methods
 /** Create a new Snapshot */
-SnapshotInterpolation.CreateSnapshot(state: State): Types.Snapshot
+SnapshotInterpolation.CreateSnapshot(state: State): Snapshot
 /** Create a new ID */
 SnapshotInterpolation.NewId(): string
 /** Get the current time in milliseconds. */
