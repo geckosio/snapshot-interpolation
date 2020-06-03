@@ -1,6 +1,6 @@
 import { Snapshot, InterpolatedSnapshot, Time } from './types'
 import { Vault } from './vault'
-import { lerp, lerpDegrees } from './lerp'
+import { lerp, degreeLerp } from './lerp'
 
 /** A Snapshot Interpolation library. */
 export class SnapshotInterpolation {
@@ -120,8 +120,8 @@ export class SnapshotInterpolation {
     let tmpSnapshot: Snapshot = JSON.parse(JSON.stringify(newer))
 
     const lerpFnc = (method: string, start: number, end: number, t: number) => {
-      if (method === 'normal') return lerp(start, end, t)
-      else if (method === 'deg') return lerpDegrees(start, end, t)
+      if (method === 'linear') return lerp(start, end, t)
+      else if (method === 'deg') return degreeLerp(start, end, t)
       else throw new Error(`No lerp method "${method}" found!`)
     }
 
@@ -129,7 +129,7 @@ export class SnapshotInterpolation {
       params.forEach(p => {
         // TODO yandeu: improve this code
         const match = p.match(/\w\(([\w]+)\)/)
-        const lerpMethod = match ? match?.[1] : 'normal'
+        const lerpMethod = match ? match?.[1] : 'linear'
         if (match) p = match?.[0].replace(/\([\S]+$/gm, '')
 
         const p0 = newer.state[i]?.[p]
