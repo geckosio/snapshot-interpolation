@@ -34,7 +34,7 @@ test('calc interpolated without any data', () => {
 test('should create and add snapshot', async done => {
   await delay()
   snapshot = SI.snapshot.create([
-    { x: 0, y: 0, d: 0, r: 0, q: { x: 0, y: 0, z: 0, w: 1 } },
+    { id: 'hero', x: 0, y: 0, d: 0, r: 0, q: { x: 0, y: 0, z: 0, w: 1 } },
   ])
   id1 = snapshot.id
   SI.snapshot.add(snapshot)
@@ -64,6 +64,7 @@ test('getting latest snapshot should have same id', () => {
 test('worldState should be an array', () => {
   expect(() => {
     SI.snapshot.create({
+      id: 'hero',
       x: 10,
       y: 10,
       d: 90,
@@ -77,6 +78,7 @@ test('should create and add another snapshot', async done => {
   await delay()
   snapshot = SI.snapshot.create([
     {
+      id: 'hero',
       x: 10,
       y: 10,
       d: 90,
@@ -93,6 +95,12 @@ test('should create and add another snapshot', async done => {
 test('should get interpolated value', () => {
   interpolatedSnapshot = SI.calcInterpolation('x y d(deg) r(rad) q(quat)')
   expect(interpolatedSnapshot).not.toBeUndefined()
+})
+
+test('can not interpolate strings', () => {
+  expect(() => {
+    SI.calcInterpolation('id')
+  }).toThrow()
 })
 
 test('can not interpolated unknown method', () => {

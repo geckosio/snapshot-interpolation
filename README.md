@@ -170,6 +170,7 @@ type State = Entity[]
 type Quat = { x: number; y: number; z: number; w: number }
 
 interface Entity {
+  id: string
   [key: string]: Value
 }
 interface Snapshot {
@@ -186,6 +187,10 @@ interface InterpolatedSnapshot extends Omit<Snapshot, 'id' | 'time'> {
 // static methods
 /** Create a new Snapshot */
 SnapshotInterpolation.CreateSnapshot(state: State): Types.Snapshot
+/** Create a new ID */
+SnapshotInterpolation.NewId(): string
+/** Get the current time in milliseconds. */
+SnapshotInterpolation.Now(): number
 
 // class SnapshotInterpolation
 const SI = new SnapshotInterpolation(serverFPS?: number)

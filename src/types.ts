@@ -1,6 +1,7 @@
 export type Value = number | string | Quat | undefined
 
 export interface Entity {
+  id: string
   [key: string]: Value
 }
 

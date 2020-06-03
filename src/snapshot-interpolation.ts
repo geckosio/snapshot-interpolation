@@ -42,6 +42,7 @@ export class SnapshotInterpolation {
     return this._timeOffset
   }
 
+  /** Create a new ID */
   public static NewId() {
     return Math.random()
       .toString(36)
@@ -133,7 +134,8 @@ export class SnapshotInterpolation {
     const lerpFnc = (method: string, start: Value, end: Value, t: number) => {
       if (typeof start === 'undefined' || typeof end === 'undefined') return
 
-      if (typeof start === 'string' || typeof end === 'string') return
+      if (typeof start === 'string' || typeof end === 'string')
+        throw new Error(`Can't interpolate string!`)
 
       if (typeof start === 'number' && typeof end === 'number') {
         if (method === 'linear') return lerp(start, end, t)
