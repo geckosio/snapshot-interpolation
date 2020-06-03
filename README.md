@@ -10,6 +10,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/@geckos.io/snapshot-interpolation.svg?style=flat-square)](https://www.npmjs.com/package/@geckos.io/snapshot-interpolation)
 [![Github Workflow](https://img.shields.io/github/workflow/status/geckosio/snapshot-interpolation/CI/master?label=github%20build&logo=github&style=flat-square)](https://github.com/geckosio/snapshot-interpolation/actions?query=workflow%3ACI)
+![GitHub last commit](https://img.shields.io/github/last-commit/geckosio/snapshot-interpolation?style=flat-square)
 [![Downloads](https://img.shields.io/npm/dm/@geckos.io/snapshot-interpolation.svg?style=flat-square)](https://www.npmjs.com/package/@geckos.io/snapshot-interpolation)
 [![Codecov](https://img.shields.io/codecov/c/github/geckosio/snapshot-interpolation?logo=codecov&style=flat-square)](https://codecov.io/gh/geckosio/snapshot-interpolation)
 [![build with TypeScript](https://img.shields.io/badge/built%20with-TypeScript-blue?style=flat-square)](https://www.typescriptlang.org/)
