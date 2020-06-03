@@ -77,18 +77,15 @@ const serverReconciliation = () => {
     // get the latest snapshot from the server
     const serverSnapshot = SI.vault.get()
     // get the closest player snapshot that matches the server snapshot time
-    const tmp = playerVault.get(serverSnapshot.time, true)
-    if (!tmp) return
-
-    const playerSnapshot = tmp[0]
+    const playerSnapshot = playerVault.get(serverSnapshot.time, true)
 
     if (serverSnapshot && playerSnapshot) {
       // get the current player position on the server
       const serverPos = serverSnapshot.state.filter(s => s.id === channel.id)[0]
 
       // calculate the offset between server and client
-      const offsetX = playerSnapshot.state.x - serverPos.x
-      const offsetY = playerSnapshot.state.y - serverPos.y
+      const offsetX = playerSnapshot.state[0].x - serverPos.x
+      const offsetY = playerSnapshot.state[0].y - serverPos.y
 
       // check if the player is currently on the move
       const isMoving = left || up || right || down
@@ -151,7 +148,7 @@ const loop = () => {
         player.y = y
       } else {
         // add new player
-        players.set(id, { x, y })
+        players.set(id, { id, x, y })
       }
     })
   }

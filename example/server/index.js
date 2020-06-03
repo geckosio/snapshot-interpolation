@@ -24,7 +24,6 @@ const collisionDetection = (rect1, rect2) => {
 
 io.onConnection(channel => {
   players.set(channel.id, {
-    id: SnapshotInterpolation.NewId(),
     x: Math.random() * 500,
     y: Math.random() * 500,
     r: 0,
