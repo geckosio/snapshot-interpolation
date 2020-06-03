@@ -61,6 +61,12 @@ test('getting latest snapshot should have same id', () => {
   expect(s.id).toBe(snapshot.id)
 })
 
+test('each entity should always have id', () => {
+  expect(() => {
+    SnapshotInterpolation.CreateSnapshot([{ x: 10, y: 10 }])
+  }).toThrow()
+})
+
 test('worldState should be an array', () => {
   expect(() => {
     SI.snapshot.create({

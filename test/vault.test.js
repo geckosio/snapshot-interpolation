@@ -32,7 +32,9 @@ test('max vault size should be increased to 180', () => {
 
 test('add a snapshot to the vault', async done => {
   await delay()
-  const snapshot = SnapshotInterpolation.CreateSnapshot([{ x: 10, y: 10 }])
+  const snapshot = SnapshotInterpolation.CreateSnapshot([
+    { id: 'hero', x: 10, y: 10 },
+  ])
   snapshotId = snapshot.id
   vault.add(snapshot)
   expect(vault.size).toBe(1)
@@ -52,13 +54,21 @@ test('get a snapshot by its id', () => {
 test('add more snapshots to the vault', async done => {
   vault.setMaxSize(4)
   await delay()
-  vault.add(SnapshotInterpolation.CreateSnapshot([{ x: 20, y: 20 }]))
+  vault.add(
+    SnapshotInterpolation.CreateSnapshot([{ id: 'hero', x: 20, y: 20 }])
+  )
   await delay()
-  vault.add(SnapshotInterpolation.CreateSnapshot([{ x: 30, y: 30 }]))
+  vault.add(
+    SnapshotInterpolation.CreateSnapshot([{ id: 'hero', x: 30, y: 30 }])
+  )
   await delay()
-  vault.add(SnapshotInterpolation.CreateSnapshot([{ x: 40, y: 40 }]))
+  vault.add(
+    SnapshotInterpolation.CreateSnapshot([{ id: 'hero', x: 40, y: 40 }])
+  )
   await delay()
-  vault.add(SnapshotInterpolation.CreateSnapshot([{ x: 50, y: 50 }]))
+  vault.add(
+    SnapshotInterpolation.CreateSnapshot([{ id: 'hero', x: 50, y: 50 }])
+  )
   expect(vault.size).toBe(4)
   done()
 })

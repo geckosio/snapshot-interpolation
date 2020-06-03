@@ -61,8 +61,16 @@ export class SnapshotInterpolation {
 
   /** Create a new Snapshot */
   public static CreateSnapshot(state: State): Snapshot {
+    // check if state is an array
     if (!Array.isArray(state))
       throw new Error('You have to pass an Array to createSnapshot()')
+
+    // check if each entity has an id
+    const withoutID = state.filter(
+      e => typeof e.id !== 'string' && typeof e.id !== 'number'
+    )
+    //console.log(withoutID)
+    if (withoutID.length > 0) throw new Error('Each Entity needs to have a id')
 
     return {
       id: SnapshotInterpolation.NewId(),
@@ -150,7 +158,7 @@ export class SnapshotInterpolation {
       throw new Error(`No lerp method "${method}" found!`)
     }
 
-    newer.state.forEach((_d: Entity, i: number) => {
+    newer.state.forEach((e: Entity, i: number) => {
       params.forEach(p => {
         // TODO yandeu: improve this code
         const match = p.match(/\w\(([\w]+)\)/)
