@@ -57,8 +57,8 @@ $ npm start
 // import @geckos.io/snapshot-interpolation
 import { SnapshotInterpolation } from '@geckos.io/snapshot-interpolation'
 
-// initialize the library (add your server's fps in milliseconds)
-const SI = new SnapshotInterpolation(serverFPS)
+// initialize the library
+const SI = new SnapshotInterpolation()
 
 // your server update loop
 update() {
@@ -79,8 +79,8 @@ update() {
 // import @geckos.io/snapshot-interpolation
 import { SnapshotInterpolation } from '@geckos.io/snapshot-interpolation'
 
-// initialize the library
-const SI = new SnapshotInterpolation()
+// initialize the library (add your server's fps in milliseconds)
+const SI = new SnapshotInterpolation(serverFPS)
 
 // when receiving the snapshot on the client
 this.on('update', (snapshot) => {
@@ -93,7 +93,7 @@ update() {
   // calculate the interpolation for the parameters x and y and return the snapshot
   const snapshot = SI.calcInterpolation('x y')
 
-  // access your state in snapshot.state.
+  // access your state
   const { state } = snapshot
 
   // apply the interpolated values to you game objects
