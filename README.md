@@ -153,3 +153,74 @@ const customVault = new Vault()
 ## Compression
 
 You can compress the snapshots manually before sending them to the client, and decompress them when the client receives them. No, compression library is included. You have the freedom to do it however it suits your game best.
+
+## API
+
+This look very TypeScriptisch, but you can of course use in in JavaScript as well.
+
+```ts
+// import
+import { SnapshotInterpolation, Vault, Types } from '@geckos.io/snapshot-interpolation'
+
+// types and interfaces
+type Value = number | string | Quat | undefined
+type ID = string
+type Time = number
+type State = Entity[]
+type Quat = { x: number; y: number; z: number; w: number }
+
+interface Entity {
+  [key: string]: Value
+}
+interface Snapshot {
+  id: ID
+  time: Time
+  state: State
+}
+interface InterpolatedSnapshot extends Omit<Snapshot, 'id' | 'time'> {
+  percentage: number
+  older: ID
+  newer: ID
+}
+
+// static methods
+/** Create a new Snapshot */
+SnapshotInterpolation.CreateSnapshot(state: State): Types.Snapshot
+
+// class SnapshotInterpolation
+const SI = new SnapshotInterpolation(serverFPS?: number)
+/** Access the vault. */
+SI.vault: Vault
+/** Get the Interpolation Buffer time in milliseconds. */
+SI.interpolationBuffer.get(): number
+/** Set the Interpolation Buffer time in milliseconds. */
+SI.interpolationBuffer.set(milliseconds: number): void
+/** Create the snapshot on the server. */
+SI.snapshot.create(state: State): Snapshot
+/** Add the snapshot you received from the server to automatically calculate the interpolation with calcInterpolation() */
+SI.snapshot.add(snapshot: Snapshot): void
+/** Interpolate between two snapshots give the percentage or time. */
+SI.interpolate(snapshotA: Snapshot, snapshotB: Snapshot, timeOrPercentage: number, parameters: string): InterpolatedSnapshot
+/** Get the calculated interpolation on the client. */
+SI.calcInterpolation(parameters: string): InterpolatedSnapshot | undefined
+
+// class Vault
+const vault = new Vault()
+/** Get a Snapshot by its ID. */
+vault.getById(id: ID): Snapshot
+/** Get the latest snapshot */
+vault.get(): Snapshot | undefined;
+/** Get the two snapshots around a specific time */
+vault.get(time: number): { older: Snapshot; newer: Snapshot; } | undefined
+/** Get the closest snapshot to e specific time */
+get(time: number, closest: boolean): Snapshot | undefined
+/** Add a snapshot to the vault. */
+vault.add(snapshot: Snapshot): void
+/** Get the current capacity (size) of the vault. */
+vault.size(): number
+/** Set the max capacity (size) of the vault. */
+vault.setMaxSize(size: number): void
+/** Get the max capacity (size) of the vault. */
+vault.getMaxSize(): number
+
+```

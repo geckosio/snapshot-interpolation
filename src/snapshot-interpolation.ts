@@ -1,4 +1,11 @@
-import { Snapshot, InterpolatedSnapshot, Time, Value } from './types'
+import {
+  Snapshot,
+  InterpolatedSnapshot,
+  Time,
+  Value,
+  State,
+  Entity,
+} from './types'
 import { Vault } from './vault'
 import { lerp, degreeLerp, quatSlerp, radianLerp } from './lerp'
 
@@ -44,14 +51,15 @@ export class SnapshotInterpolation {
   public get snapshot() {
     return {
       /** Create the snapshot on the server. */
-      create: (state: any[]): Snapshot =>
+      create: (state: State): Snapshot =>
         SnapshotInterpolation.CreateSnapshot(state),
       /** Add the snapshot you received from the server to automatically calculate the interpolation with calcInterpolation() */
       add: (snapshot: Snapshot): void => this.addSnapshot(snapshot),
     }
   }
 
-  public static CreateSnapshot(state: any[]): Snapshot {
+  /** Create a new Snapshot */
+  public static CreateSnapshot(state: State): Snapshot {
     if (!Array.isArray(state))
       throw new Error('You have to pass an Array to createSnapshot()')
 
@@ -140,7 +148,7 @@ export class SnapshotInterpolation {
       throw new Error(`No lerp method "${method}" found!`)
     }
 
-    newer.state.forEach((_d: any, i: number) => {
+    newer.state.forEach((_d: Entity, i: number) => {
       params.forEach(p => {
         // TODO yandeu: improve this code
         const match = p.match(/\w\(([\w]+)\)/)

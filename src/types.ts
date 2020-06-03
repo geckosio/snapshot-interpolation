@@ -13,6 +13,7 @@ export interface Snapshot {
   time: Time
   state: State
 }
+
 export interface InterpolatedSnapshot extends Omit<Snapshot, 'id' | 'time'> {
   percentage: number
   older: ID
