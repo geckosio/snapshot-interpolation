@@ -91,7 +91,10 @@ export class SnapshotInterpolation {
     parameters: string
   ): InterpolatedSnapshot {
     const sorted = [snapshotA, snapshotB].sort((a, b) => b.time - a.time)
-    const params = parameters.split(' ')
+    const params = parameters
+      .trim()
+      .replace(/\W+/, ' ')
+      .split(' ')
 
     const newer: Snapshot = sorted[0]
     const older: Snapshot = sorted[1]
