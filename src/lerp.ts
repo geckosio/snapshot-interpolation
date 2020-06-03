@@ -1,3 +1,5 @@
+import { Quat } from './types'
+
 const PI = 3.14159265359
 const PI_TIMES_TWO = 6.28318530718
 
@@ -58,7 +60,6 @@ export const radianLerp = (start: number, end: number, t: number) => {
 }
 
 // http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/
-export type Quat = { x: number; y: number; z: number; w: number }
 export const quatSlerp = (qa: Quat, qb: Quat, t: number) => {
   // quaternion to return
   let qm: Quat = { x: 0, y: 0, z: 0, w: 1 }

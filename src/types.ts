@@ -12,3 +12,5 @@ export interface InterpolatedSnapshot extends Omit<Snapshot, 'id' | 'time'> {
   older: ID
   newer: ID
 }
+
+export type Quat = { x: number; y: number; z: number; w: number }

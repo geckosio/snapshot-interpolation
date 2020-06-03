@@ -27,13 +27,15 @@ test('initialize with server fps', () => {
 })
 
 test('calc interpolated without any data', () => {
-  interpolatedSnapshot = SI.calcInterpolation('x y r(deg)')
+  interpolatedSnapshot = SI.calcInterpolation('x y d(deg) r(rad) q(quat)')
   expect(interpolatedSnapshot).toBeNull()
 })
 
 test('should create and add snapshot', async done => {
   await delay()
-  snapshot = SI.snapshot.create([{ x: 0, y: 0, r: 0 }])
+  snapshot = SI.snapshot.create([
+    { x: 0, y: 0, d: 0, r: 0, q: { x: 0, y: 0, z: 0, w: 1 } },
+  ])
   id1 = snapshot.id
   SI.snapshot.add(snapshot)
   expect(snapshot).not.toBeUndefined()
@@ -42,7 +44,7 @@ test('should create and add snapshot', async done => {
 
 test('calc interpolated with not enough data', async () => {
   await delay()
-  interpolatedSnapshot = SI.calcInterpolation('x y r(deg)')
+  interpolatedSnapshot = SI.calcInterpolation('x y d(deg) r(rad) q(quat)')
   expect(interpolatedSnapshot).toBeNull()
 })
 
@@ -61,13 +63,27 @@ test('getting latest snapshot should have same id', () => {
 
 test('worldState should be an array', () => {
   expect(() => {
-    SI.snapshot.create({ x: 10, y: 10, r: 10 })
+    SI.snapshot.create({
+      x: 10,
+      y: 10,
+      d: 90,
+      r: Math.PI / 4,
+      q: { x: 0, y: 0.707, z: 0, w: 0.707 },
+    })
   }).toThrow()
 })
 
 test('should create and add another snapshot', async done => {
   await delay()
-  snapshot = SI.snapshot.create([{ x: 10, y: 10, r: 10 }])
+  snapshot = SI.snapshot.create([
+    {
+      x: 10,
+      y: 10,
+      d: 90,
+      r: Math.PI / 4,
+      q: { x: 0, y: 0.707, z: 0, w: 0.707 },
+    },
+  ])
   id2 = snapshot.id
   SI.snapshot.add(snapshot)
   expect(SI.vault.size).toBe(2)
@@ -75,19 +91,19 @@ test('should create and add another snapshot', async done => {
 })
 
 test('should get interpolated value', () => {
-  interpolatedSnapshot = SI.calcInterpolation('x y r(deg)')
+  interpolatedSnapshot = SI.calcInterpolation('x y d(deg) r(rad) q(quat)')
   expect(interpolatedSnapshot).not.toBeNull()
 })
 
 test('can not interpolated unknown method', () => {
   expect(() => {
-    SI.calcInterpolation('x y r(mojito)')
+    SI.calcInterpolation('x y d(mojito)')
   }).toThrow()
 })
 
 test('interpolate the value p, that is not there', () => {
-  const snap = SI.calcInterpolation('x y r(deg) p')
-  expect(snap.state[0].p).toBeNaN()
+  const snap = SI.calcInterpolation('x y d(deg) p')
+  expect(snap.state[0].p).toBeNull()
 })
 
 test('should have same id as original snapshots', () => {
@@ -99,6 +115,10 @@ test('should have same id as original snapshots', () => {
 test('values should be interpolated', () => {
   interpolatedSnapshot.state.forEach(entity => {
     expect(entity.x > 0 && entity.x < 10).toBeTruthy()
+    expect(entity.r > 0 && entity.r < Math.PI / 4).toBeTruthy()
+    expect(entity.d > 0 && entity.d < 90).toBeTruthy()
+    expect(entity.q.w < 1 && entity.q.w > 0.707).toBeTruthy()
+    expect(entity.q.y > 0 && entity.q.y < 0.707).toBeTruthy()
   })
 })
 

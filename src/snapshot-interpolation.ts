@@ -1,6 +1,6 @@
-import { Snapshot, InterpolatedSnapshot, Time } from './types'
+import { Snapshot, InterpolatedSnapshot, Time, Quat } from './types'
 import { Vault } from './vault'
-import { lerp, degreeLerp } from './lerp'
+import { lerp, degreeLerp, quatSlerp, radianLerp } from './lerp'
 
 /** A Snapshot Interpolation library. */
 export class SnapshotInterpolation {
@@ -119,10 +119,26 @@ export class SnapshotInterpolation {
 
     let tmpSnapshot: Snapshot = JSON.parse(JSON.stringify(newer))
 
-    const lerpFnc = (method: string, start: number, end: number, t: number) => {
-      if (method === 'linear') return lerp(start, end, t)
-      else if (method === 'deg') return degreeLerp(start, end, t)
-      else throw new Error(`No lerp method "${method}" found!`)
+    const lerpFnc = (
+      method: string,
+      start: number | Quat | undefined,
+      end: number | Quat | undefined,
+      t: number
+    ) => {
+      if (typeof start === 'undefined' || typeof end === 'undefined')
+        return null
+
+      if (typeof start === 'number' && typeof end === 'number') {
+        if (method === 'linear') return lerp(start, end, t)
+        else if (method === 'deg') return degreeLerp(start, end, t)
+        else if (method === 'rad') return radianLerp(start, end, t)
+      }
+
+      if (typeof start !== 'number' && typeof end !== 'number') {
+        if (method === 'quat') return quatSlerp(start, end, t)
+      }
+
+      throw new Error(`No lerp method "${method}" found!`)
     }
 
     newer.state.forEach((_d: any, i: number) => {
@@ -132,8 +148,8 @@ export class SnapshotInterpolation {
         const lerpMethod = match ? match?.[1] : 'linear'
         if (match) p = match?.[0].replace(/\([\S]+$/gm, '')
 
-        const p0 = newer.state[i]?.[p]
-        const p1 = older.state[i]?.[p]
+        const p0: number | Quat | undefined = newer.state[i]?.[p]
+        const p1: number | Quat | undefined = older.state[i]?.[p]
         const pn = lerpFnc(lerpMethod, p1, p0, pPercent)
         tmpSnapshot.state[i][p] = pn
       })

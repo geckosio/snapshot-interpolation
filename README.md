@@ -107,14 +107,37 @@ update() {
 
 ## World State
 
-The World State has to be an Array with non nested Objects.
+The World State has to be an Array with non nested Objects (expect for Quaternions). You can name you keys as you want. For degree, radian or quaternion values add (deg), (rad) or (quat).
+
+### Linear Interpolation
 
 ```js
+// the worldState on the server
 const worldState = [
   { id: 'heroBlue', x: 23, y: 14, z: 47 },
   { id: 'heroRed', x: 23, y: 14, z: 47 },
   { id: 'heroGreen', x: 23, y: 14, z: 47 },
 ]
+
+// calc interpolation on the client
+SI.calcInterpolation('x y z')
+```
+
+### Degrees, Radians and Quaternions
+
+```js
+// the worldState on the server
+const worldState = [
+  {
+    id: 'myHero',
+    rad: Math.PI / 4,
+    rotationInDeg: 90,
+    q: { x: 0, y: 0.707, z: 0, w: 0.707 },
+  },
+]
+
+// calc interpolation on the client
+SI.calcInterpolation('rad(rad) rotationInDeg(deg) q(quat)')
 ```
 
 ## Vault
