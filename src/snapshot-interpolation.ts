@@ -159,14 +159,18 @@ export class SnapshotInterpolation {
     }
 
     newer.state.forEach((e: Entity, i: number) => {
+      const id = e.id
+      const other: Entity | undefined = older.state.find(e => e.id === id)
+      if (!other) return
+
       params.forEach(p => {
         // TODO yandeu: improve this code
         const match = p.match(/\w\(([\w]+)\)/)
         const lerpMethod = match ? match?.[1] : 'linear'
         if (match) p = match?.[0].replace(/\([\S]+$/gm, '')
 
-        const p0 = newer.state[i]?.[p]
-        const p1 = older.state[i]?.[p]
+        const p0 = e?.[p]
+        const p1 = other?.[p]
 
         const pn = lerpFnc(lerpMethod, p1, p0, pPercent)
         tmpSnapshot.state[i][p] = pn
