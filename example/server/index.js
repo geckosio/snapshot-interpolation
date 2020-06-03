@@ -24,6 +24,7 @@ const collisionDetection = (rect1, rect2) => {
 
 io.onConnection(channel => {
   players.set(channel.id, {
+    id: SnapshotInterpolation.NewId(),
     x: Math.random() * 500,
     y: Math.random() * 500,
     r: 0,
@@ -88,7 +89,7 @@ const loop = () => {
     const worldState = []
     players.forEach((player, key) => {
       worldState.push({
-        playerId: key,
+        id: key,
         x: player.x,
         y: player.y,
         r: player.r,

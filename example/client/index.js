@@ -84,9 +84,7 @@ const serverReconciliation = () => {
 
     if (serverSnapshot && playerSnapshot) {
       // get the current player position on the server
-      const serverPos = serverSnapshot.state.filter(
-        s => s.playerId === channel.id
-      )[0]
+      const serverPos = serverSnapshot.state.filter(s => s.id === channel.id)[0]
 
       // calculate the offset between server and client
       const offsetX = playerSnapshot.state.x - serverPos.x
@@ -115,7 +113,9 @@ const clientPrediction = () => {
     if (up) player.y -= speed
     if (right) player.x += speed
     if (down) player.y += speed
-    playerVault.add(SI.snapshot.create([{ x: player.x, y: player.y }]))
+    playerVault.add(
+      SI.snapshot.create([{ id: channel.id, x: player.x, y: player.y }])
+    )
   }
 }
 
@@ -140,18 +140,18 @@ const loop = () => {
   if (snapshot) {
     const { state } = snapshot
     state.forEach(s => {
-      const { playerId, x, y, r } = s
+      const { id, x, y, r } = s
       // update player
-      if (players.has(playerId)) {
+      if (players.has(id)) {
         // do not update our own player (if we use clientPrediction and serverReconciliation)
-        if (playerId === channel.id) return
+        if (id === channel.id) return
 
-        const player = players.get(playerId)
+        const player = players.get(id)
         player.x = x
         player.y = y
       } else {
         // add new player
-        players.set(playerId, { x, y })
+        players.set(id, { x, y })
       }
     })
   }
