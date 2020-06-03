@@ -218,7 +218,7 @@ vault.get(): Snapshot | undefined;
 /** Get the two snapshots around a specific time */
 vault.get(time: number): { older: Snapshot; newer: Snapshot; } | undefined
 /** Get the closest snapshot to e specific time */
-get(time: number, closest: boolean): Snapshot | undefined
+vault.get(time: number, closest: boolean): Snapshot | undefined
 /** Add a snapshot to the vault. */
 vault.add(snapshot: Snapshot): void
 /** Get the current capacity (size) of the vault. */
