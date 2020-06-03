@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="readme/logo.png" alt="logo" height="150">
+
 # Snapshot Interpolation
 
 ## A Snapshot Interpolation library for Real-Time Multiplayer Games
