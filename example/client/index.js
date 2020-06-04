@@ -73,9 +73,16 @@ channel.onConnect(error => {
           player.color = 'red'
         }, 500)
       }
-
       console.log('You just hit ', entity.id)
     })
+  })
+
+  channel.on('removePlayer', id => {
+    if (players.has(id)) {
+      setTimeout(() => {
+        players.delete(id)
+      }, 1000)
+    }
   })
 })
 

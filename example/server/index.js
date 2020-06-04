@@ -17,7 +17,10 @@ io.onConnection(channel => {
   })
 
   channel.onDisconnect(() => {
-    if (players.has(channel.id)) players.delete(channel.id)
+    io.emit('removePlayer', channel.id)
+    if (players.has(channel.id)) {
+      players.delete(channel.id)
+    }
   })
 
   channel.on('move', data => {
