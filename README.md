@@ -51,6 +51,12 @@ $ npm install
 $ npm start
 ```
 
+## Install
+
+```console
+npm install @geckos.io/snapshot-interpolation
+```
+
 ## How to use
 
 ### server.js
