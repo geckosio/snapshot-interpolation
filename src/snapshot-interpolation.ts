@@ -15,6 +15,7 @@ export class SnapshotInterpolation {
   public vault = new Vault()
   private _interpolationBuffer = 100
   private _timeOffset = -1
+  /** The current server time based on the current snapshot interpolation. */
   public serverTime = 0
 
   constructor(serverFPS?: number) {
@@ -37,7 +38,10 @@ export class SnapshotInterpolation {
     return Date.now() // - Date.parse('01 Jan 2020')
   }
 
-  /** Get the time offset between client and server (inclusive latency). */
+  /**
+   * Get the time offset between client and server (inclusive latency).
+   * If the client and server time are in sync, timeOffset will be the latency.
+   */
   public get timeOffset() {
     return this._timeOffset
   }
@@ -85,7 +89,6 @@ export class SnapshotInterpolation {
       // by subtracting the current client date from the server time of the
       // first snapshot
       this._timeOffset = SnapshotInterpolation.Now() - snapshot.time
-      // console.log('ServerTime offset is ', this._timeOffset)
     }
 
     this.vault.add(snapshot)
@@ -194,6 +197,7 @@ export class SnapshotInterpolation {
     // get the snapshots [this._interpolationBuffer] ago
     const serverTime =
       SnapshotInterpolation.Now() - this._timeOffset - this._interpolationBuffer
+
     const shots = this.vault.get(serverTime)
     if (!shots) return
 
