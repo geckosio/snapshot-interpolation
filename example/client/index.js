@@ -17,8 +17,8 @@ body.style.overflow = 'hidden'
 body.style.background = '#21222c'
 
 const canvas = document.createElement('canvas')
-const width = 800
-const height = 600
+const width = 1280
+const height = 720
 canvas.width = width
 canvas.height = height
 let worldScale = 1
@@ -116,7 +116,7 @@ const render = () => {
   players.forEach(p => {
     ctx.beginPath()
     ctx.fillStyle = p.color || '#87e9f0'
-    ctx.rect(p.x, p.y, 25, 40)
+    ctx.rect(p.x, p.y, 40, 60)
     ctx.fill()
   })
 }
@@ -231,7 +231,7 @@ canvas.addEventListener('pointerdown', e => {
   players.forEach(entity => {
     if (
       collisionDetection(
-        { x: entity.x, y: entity.y, width: 25, height: 40 },
+        { x: entity.x, y: entity.y, width: 40, height: 60 },
         // make the pointer 10px by 10px
         { x: clientX - 5, y: clientY - 5, width: 10, height: 10 }
       )

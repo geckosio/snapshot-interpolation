@@ -49,7 +49,7 @@ io.onConnection(channel => {
       shot.state.forEach(entity => {
         if (
           collisionDetection(
-            { x: entity.x, y: entity.y, width: 25, height: 40 },
+            { x: entity.x, y: entity.y, width: 40, height: 60 },
             // make the pointer 10px by 10px
             { x: x - 5, y: y - 5, width: 10, height: 10 }
           )
