@@ -91,6 +91,7 @@ test('should create and add another snapshot', async done => {
       r: Math.PI / 4,
       q: { x: 0, y: 0.707, z: 0, w: 0.707 },
     },
+    { id: 'enemyOne' },
   ])
   id2 = snapshot.id
   SI.snapshot.add(snapshot)
@@ -127,13 +128,13 @@ test('should have same id as original snapshots', () => {
 })
 
 test('values should be interpolated', () => {
-  interpolatedSnapshot.state.forEach(entity => {
-    expect(entity.x > 0 && entity.x < 10).toBeTruthy()
-    expect(entity.r > 0 && entity.r < Math.PI / 4).toBeTruthy()
-    expect(entity.d > 0 && entity.d < 90).toBeTruthy()
-    expect(entity.q.w < 1 && entity.q.w > 0.707).toBeTruthy()
-    expect(entity.q.y > 0 && entity.q.y < 0.707).toBeTruthy()
-  })
+  const entity = interpolatedSnapshot.state.find(e => e.id === 'hero')
+
+  expect(entity.x > 0 && entity.x < 10).toBeTruthy()
+  expect(entity.r > 0 && entity.r < Math.PI / 4).toBeTruthy()
+  expect(entity.d > 0 && entity.d < 90).toBeTruthy()
+  expect(entity.q.w < 1 && entity.q.w > 0.707).toBeTruthy()
+  expect(entity.q.y > 0 && entity.q.y < 0.707).toBeTruthy()
 })
 
 test('timeOffset should >= 0', () => {
