@@ -21,10 +21,12 @@
 
 ## About
 
-The Interpolation Buffer is by default "latency + 3 serverFrames" long (Interpolation between 4 Snapshots).
-So if the **latency is 30ms** and the **ServerFrame is 16ms**, the Interpolation Buffer would be 78ms long.
+The Interpolation Buffer is by default 3 server frames long (Interpolation between 4 Snapshots).
+So if the **latency is 50ms** and one **server frame is 50ms**, the Interpolation Buffer would be 200ms long.
 
-If you are interested to learn a bit about Snapshot Interpolation, watch [this video](https://youtu.be/Z9X4lysFr64?t=800).
+If you are interested to learn a bit more about Snapshot Interpolation, watch [this video](https://youtu.be/Z9X4lysFr64?t=800).
+
+## Features
 
 - Easily add **Client-Side Prediction** and **Server Reconciliation**.
 - Easily add **Lag Compensation**.
@@ -33,7 +35,7 @@ If you are interested to learn a bit about Snapshot Interpolation, watch [this v
 ## Game Example
 
 The [github repository](https://github.com/geckosio/snapshot-interpolation) contains a nice example. Take a look!  
-_I will create a video in the future that examples the example_
+_I will create a video in the future that explains the example a bit more._
 
 ```bash
 # clone the repo
@@ -162,13 +164,14 @@ This looks very TypeScriptisch, but you can of course use it in JavaScript as we
 // import
 import { SnapshotInterpolation, Vault, Types } from '@geckos.io/snapshot-interpolation'
 
-// types and interfaces
+// types
 type Value = number | string | Quat | undefined
 type ID = string
 type Time = number
 type State = Entity[]
 type Quat = { x: number; y: number; z: number; w: number }
 
+// interfaces
 interface Entity {
   id: string
   [key: string]: Value
@@ -187,44 +190,61 @@ interface InterpolatedSnapshot extends Omit<Snapshot, 'id' | 'time'> {
 // static methods
 /** Create a new Snapshot */
 SnapshotInterpolation.CreateSnapshot(state: State): Snapshot
+
 /** Create a new ID */
 SnapshotInterpolation.NewId(): string
+
 /** Get the current time in milliseconds. */
 SnapshotInterpolation.Now(): number
 
 // class SnapshotInterpolation
 const SI = new SnapshotInterpolation(serverFPS?: number)
+
 /** Access the vault. */
 SI.vault: Vault
+
 /** Get the Interpolation Buffer time in milliseconds. */
 SI.interpolationBuffer.get(): number
+
 /** Set the Interpolation Buffer time in milliseconds. */
 SI.interpolationBuffer.set(milliseconds: number): void
+
 /** Create the snapshot on the server. */
 SI.snapshot.create(state: State): Snapshot
+
 /** Add the snapshot you received from the server to automatically calculate the interpolation with calcInterpolation() */
 SI.snapshot.add(snapshot: Snapshot): void
+
 /** Interpolate between two snapshots give the percentage or time. */
 SI.interpolate(snapshotA: Snapshot, snapshotB: Snapshot, timeOrPercentage: number, parameters: string): InterpolatedSnapshot
+
 /** Get the calculated interpolation on the client. */
 SI.calcInterpolation(parameters: string): InterpolatedSnapshot | undefined
 
 // class Vault
 const vault = new Vault()
+
 /** Get a Snapshot by its ID. */
 vault.getById(id: ID): Snapshot
+
 /** Get the latest snapshot */
 vault.get(): Snapshot | undefined;
+
 /** Get the two snapshots around a specific time */
 vault.get(time: number): { older: Snapshot; newer: Snapshot; } | undefined
+
 /** Get the closest snapshot to e specific time */
 vault.get(time: number, closest: boolean): Snapshot | undefined
+
 /** Add a snapshot to the vault. */
 vault.add(snapshot: Snapshot): void
+
 /** Get the current capacity (size) of the vault. */
 vault.size(): number
+
 /** Set the max capacity (size) of the vault. */
 vault.setMaxSize(size: number): void
+
 /** Get the max capacity (size) of the vault. */
 vault.getMaxSize(): number
 
