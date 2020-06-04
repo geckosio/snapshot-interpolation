@@ -14,12 +14,21 @@ const body = document.body
 body.style.padding = 0
 body.style.margin = 0
 body.style.overflow = 'hidden'
+body.style.background = '#21222c'
 
 const canvas = document.createElement('canvas')
-canvas.style.width = `${window.innerWidth}px`
-canvas.style.height = `${window.innerHeight}px`
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
+canvas.style.width = '800px'
+canvas.style.height = '600px'
+canvas.width = 800
+canvas.height = 600
+
+const centerCanvas = () => {
+  canvas.style.margin = ` ${window.innerHeight / 2 -
+    canvas.height / 2}px 0px 0px ${window.innerWidth / 2 - canvas.width / 2}px`
+}
+centerCanvas()
+window.addEventListener('resize', () => centerCanvas())
+
 body.appendChild(canvas)
 const ctx = canvas.getContext('2d')
 
@@ -68,9 +77,9 @@ channel.onConnect(error => {
     addLatencyAndPackagesLoss(() => {
       const player = players.get(entity.id)
       if (player) {
-        player.color = 'blue'
+        player.color = '#50fa7b'
         setTimeout(() => {
-          player.color = 'red'
+          player.color = '#87e9f0'
         }, 500)
       }
       console.log('You just hit ', entity.id)
@@ -89,9 +98,12 @@ channel.onConnect(error => {
 const render = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 
+  ctx.fillStyle = '#6070a1'
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
+
   players.forEach(p => {
     ctx.beginPath()
-    ctx.fillStyle = p.color || 'red'
+    ctx.fillStyle = p.color || '#87e9f0'
     ctx.rect(p.x, p.y, 25, 40)
     ctx.fill()
   })
@@ -150,7 +162,7 @@ const loop = () => {
     if (window.isBot) {
       const player = players.get(channel.id)
       if (typeof player.direction === 'undefined') player.direction = 'right'
-      if (player.x > window.innerWidth) player.direction = 'left'
+      if (player.x > canvas.width) player.direction = 'left'
       else if (player.x < 0) player.direction = 'right'
 
       if (player.direction === 'right')
@@ -195,18 +207,17 @@ const loop = () => {
 loop()
 
 canvas.addEventListener('pointerdown', e => {
-  const { clientX, clientY } = e
-
+  const { layerX, layerY } = e
   let hit = false
   players.forEach(entity => {
     if (
       collisionDetection(
         { x: entity.x, y: entity.y, width: 25, height: 40 },
         // make the pointer 10px by 10px
-        { x: clientX - 5, y: clientY - 5, width: 10, height: 10 }
+        { x: layerX - 5, y: layerY - 5, width: 10, height: 10 }
       )
     ) {
-      entity.color = 'green'
+      entity.color = '#ff79c6'
       hit = true
     }
   })
@@ -214,7 +225,7 @@ canvas.addEventListener('pointerdown', e => {
   if (connected && hit)
     channel.emit(
       'shoot',
-      { x: clientX, y: clientY, time: SI.serverTime },
+      { x: layerX, y: layerY, time: SI.serverTime },
       { reliable: true }
     )
 })
