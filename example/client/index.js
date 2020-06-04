@@ -1,6 +1,6 @@
 import { SnapshotInterpolation, Vault } from '../../lib/index'
 import geckos from '@geckos.io/client'
-import { addLatencyAndPackagesLoss } from '../common'
+import { addLatencyAndPackagesLoss, collisionDetection } from '../common'
 
 const channel = geckos()
 const SI = new SnapshotInterpolation()
@@ -23,9 +23,22 @@ canvas.height = window.innerHeight
 body.appendChild(canvas)
 const ctx = canvas.getContext('2d')
 
+// add bots button
+window.isBot = false
+const button = document.createElement('button')
+button.innerHTML = 'Make Bot'
+button.style.position = 'absolute'
+button.style.top = '50px'
+button.style.right = '50px'
+button.addEventListener('click', () => {
+  window.isBot = !window.isBot
+  button.innerHTML = window.isBot ? 'Stop Bot' : 'Make Bot'
+  keys = { left: false, up: false, right: false, down: false }
+})
+body.appendChild(button)
+
 let connected = false
 
-window.isBot = false
 let tick = 0
 
 let keys = {
@@ -53,7 +66,15 @@ channel.onConnect(error => {
 
   channel.on('hit', entity => {
     addLatencyAndPackagesLoss(() => {
-      console.log('You just hit ', entity)
+      const player = players.get(entity.id)
+      if (player) {
+        player.color = 'blue'
+        setTimeout(() => {
+          player.color = 'red'
+        }, 500)
+      }
+
+      console.log('You just hit ', entity.id)
     })
   })
 })
@@ -63,7 +84,7 @@ const render = () => {
 
   players.forEach(p => {
     ctx.beginPath()
-    ctx.fillStyle = 'red'
+    ctx.fillStyle = p.color || 'red'
     ctx.rect(p.x, p.y, 25, 40)
     ctx.fill()
   })
@@ -120,9 +141,15 @@ const loop = () => {
   tick++
   if (connected) {
     if (window.isBot) {
-      if (Math.sin(tick / 40) > 0)
+      const player = players.get(channel.id)
+      if (typeof player.direction === 'undefined') player.direction = 'right'
+      if (player.x > window.innerWidth) player.direction = 'left'
+      else if (player.x < 0) player.direction = 'right'
+
+      if (player.direction === 'right')
         keys = { left: false, up: false, right: true, down: false }
-      else keys = { left: true, up: false, right: false, down: false }
+      if (player.direction === 'left')
+        keys = { left: true, up: false, right: false, down: false }
     }
 
     const update = [keys.left, keys.up, keys.right, keys.down]
@@ -162,8 +189,27 @@ loop()
 
 canvas.addEventListener('pointerdown', e => {
   const { clientX, clientY } = e
-  if (connected)
-    channel.emit('shoot', { x: clientX, y: clientY, time: SI.serverTime })
+
+  let hit = false
+  players.forEach(entity => {
+    if (
+      collisionDetection(
+        { x: entity.x, y: entity.y, width: 25, height: 40 },
+        // make the pointer 10px by 10px
+        { x: clientX - 5, y: clientY - 5, width: 10, height: 10 }
+      )
+    ) {
+      entity.color = 'green'
+      hit = true
+    }
+  })
+
+  if (connected && hit)
+    channel.emit(
+      'shoot',
+      { x: clientX, y: clientY, time: SI.serverTime },
+      { reliable: true }
+    )
 })
 
 document.addEventListener('keydown', e => {

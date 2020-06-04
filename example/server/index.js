@@ -1,6 +1,6 @@
 const { SnapshotInterpolation } = require('../../lib/index')
 const geckos = require('@geckos.io/server').default
-const { addLatencyAndPackagesLoss } = require('../common')
+const { addLatencyAndPackagesLoss, collisionDetection } = require('../common')
 
 const io = geckos()
 const SI = new SnapshotInterpolation()
@@ -8,19 +8,6 @@ const players = new Map()
 let tick = 0
 
 io.listen()
-
-// https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
-const collisionDetection = (rect1, rect2) => {
-  if (
-    rect1.x < rect2.x + rect2.width &&
-    rect1.x + rect1.width > rect2.x &&
-    rect1.y < rect2.y + rect2.height &&
-    rect1.y + rect1.height > rect2.y
-  ) {
-    return true
-  }
-  return false
-}
 
 io.onConnection(channel => {
   players.set(channel.id, {
@@ -64,7 +51,7 @@ io.onConnection(channel => {
             { x: x - 5, y: y - 5, width: 10, height: 10 }
           )
         ) {
-          channel.emit('hit', entity)
+          channel.emit('hit', entity, { reliable: true })
         }
       })
     })
