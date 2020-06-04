@@ -17,17 +17,27 @@ body.style.overflow = 'hidden'
 body.style.background = '#21222c'
 
 const canvas = document.createElement('canvas')
-canvas.style.width = '800px'
-canvas.style.height = '600px'
-canvas.width = 800
-canvas.height = 600
+const width = 800
+const height = 600
+canvas.width = width
+canvas.height = height
+let worldScale = 1
 
-const centerCanvas = () => {
-  canvas.style.margin = ` ${window.innerHeight / 2 -
-    canvas.height / 2}px 0px 0px ${window.innerWidth / 2 - canvas.width / 2}px`
+const resize = () => {
+  const w = window.innerWidth
+  const h = window.innerHeight
+  const scaleX = w / canvas.width
+  const scaleY = h / canvas.height
+  const scale = (worldScale = Math.min(scaleX, scaleY))
+
+  canvas.style.width = `${width * scale}px`
+  canvas.style.height = `${height * scale}px`
+
+  canvas.style.margin = ` ${h / 2 - (height * scale) / 2}px 0px 0px ${w / 2 -
+    (width * scale) / 2}px`
 }
-centerCanvas()
-window.addEventListener('resize', () => centerCanvas())
+resize()
+window.addEventListener('resize', () => resize())
 
 body.appendChild(canvas)
 const ctx = canvas.getContext('2d')
@@ -207,14 +217,21 @@ const loop = () => {
 loop()
 
 canvas.addEventListener('pointerdown', e => {
-  const { layerX, layerY } = e
+  let { clientX, clientY } = e
+  const rect = canvas.getBoundingClientRect()
+
+  clientX -= rect.left
+  clientY -= rect.top
+  clientX /= worldScale
+  clientY /= worldScale
+
   let hit = false
   players.forEach(entity => {
     if (
       collisionDetection(
         { x: entity.x, y: entity.y, width: 25, height: 40 },
         // make the pointer 10px by 10px
-        { x: layerX - 5, y: layerY - 5, width: 10, height: 10 }
+        { x: clientX - 5, y: clientY - 5, width: 10, height: 10 }
       )
     ) {
       entity.color = '#ff79c6'
@@ -225,7 +242,7 @@ canvas.addEventListener('pointerdown', e => {
   if (connected && hit)
     channel.emit(
       'shoot',
-      { x: layerX, y: layerY, time: SI.serverTime },
+      { x: clientX, y: clientY, time: SI.serverTime },
       { reliable: true }
     )
 })
