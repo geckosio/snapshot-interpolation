@@ -3,12 +3,9 @@ import geckos from '@geckos.io/client'
 import { addLatencyAndPackagesLoss, collisionDetection } from '../common'
 
 const channel = geckos()
-const SI = new SnapshotInterpolation()
+const SI = new SnapshotInterpolation(15) // the server's fps is 15
 const playerVault = new Vault()
 const players = new Map()
-
-// set a interpolation buffer of 250ms
-SI.interpolationBuffer.set(250)
 
 const body = document.body
 body.style.padding = 0

@@ -81,7 +81,7 @@ update() {
 // import @geckos.io/snapshot-interpolation
 import { SnapshotInterpolation } from '@geckos.io/snapshot-interpolation'
 
-// initialize the library (add your server's fps in milliseconds)
+// initialize the library (add your server's fps)
 const SI = new SnapshotInterpolation(serverFPS)
 
 // when receiving the snapshot on the client
