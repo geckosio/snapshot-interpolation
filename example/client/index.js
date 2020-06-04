@@ -93,7 +93,7 @@ channel.onConnect(error => {
         }, 500)
       }
       console.log('You just hit ', entity.id)
-    })
+    }, false)
   })
 
   channel.on('removePlayer', id => {

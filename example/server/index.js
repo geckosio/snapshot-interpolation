@@ -57,7 +57,7 @@ io.onConnection(channel => {
           channel.emit('hit', entity, { reliable: true })
         }
       })
-    })
+    }, false)
   })
 })
 

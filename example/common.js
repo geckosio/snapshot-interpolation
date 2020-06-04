@@ -1,5 +1,5 @@
-const addLatencyAndPackagesLoss = fnc => {
-  if (Math.random() > 0.9) return // 10% package loss
+const addLatencyAndPackagesLoss = (fnc, loss = true) => {
+  if (loss && Math.random() > 0.9) return // 10% package loss
   setTimeout(() => fnc(), 100 + Math.random() * 50) // random latency between 100 and 150
 }
 
