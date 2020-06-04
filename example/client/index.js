@@ -174,7 +174,7 @@ const loop = () => {
     if (window.isBot) {
       const player = players.get(channel.id)
       if (typeof player.direction === 'undefined') player.direction = 'right'
-      if (player.x > canvas.width) player.direction = 'left'
+      if (player.x + 40 > canvas.width) player.direction = 'left'
       else if (player.x < 0) player.direction = 'right'
 
       if (player.direction === 'right')
@@ -190,12 +190,12 @@ const loop = () => {
   clientPrediction()
   serverReconciliation()
 
-  const snapshot = SI.calcInterpolation('x y r(deg)') // interpolated
+  const snapshot = SI.calcInterpolation('x y') // interpolated
   // const snapshot = SI.vault.get() // latest
   if (snapshot) {
     const { state } = snapshot
     state.forEach(s => {
-      const { id, x, y, r } = s
+      const { id, x, y } = s
       // update player
       if (players.has(id)) {
         // do not update our own player (if we use clientPrediction and serverReconciliation)
