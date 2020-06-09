@@ -39,14 +39,14 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@geckos.io/client": "^1.4.3",
-    "@geckos.io/server": "^1.4.3",
+    "@geckos.io/client": "^1.5.0",
+    "@geckos.io/server": "^1.5.0",
     "html-webpack-plugin": "^4.3.0",
     "jest": "^26.0.1",
-    "nodemon": "^2.0.3",
+    "nodemon": "^2.0.4",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
-    "typescript": "^3.9.2",
+    "typescript": "^3.9.5",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.0"
