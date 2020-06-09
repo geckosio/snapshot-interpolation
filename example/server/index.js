@@ -76,8 +76,8 @@ const loop = () => {
     players.forEach((player, key) => {
       worldState.push({
         id: key,
-        x: player.x,
-        y: player.y,
+        x: parseFloat(player.x.toFixed(2)),
+        y: parseFloat(player.y.toFixed(2)),
       })
     })
 
