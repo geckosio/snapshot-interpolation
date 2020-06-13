@@ -205,16 +205,17 @@ type State = Entity[]
 type Quat = { x: number; y: number; z: number; w: number }
 
 // interfaces
-interface Entity {
+export interface Entity {
   id: string
   [key: string]: Value
 }
-interface Snapshot {
+export interface Snapshot {
   id: ID
   time: Time
-  state: State
+  state: State | { [key: string]: State }
 }
-interface InterpolatedSnapshot extends Omit<Snapshot, 'id' | 'time'> {
+export interface InterpolatedSnapshot {
+  state: State
   percentage: number
   older: ID
   newer: ID
