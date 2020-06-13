@@ -99,7 +99,7 @@ this.on('update', (snapshot) => {
 // your client update loop
 update() {
   // calculate the interpolation for the parameters x and y and return the snapshot
-  const snapshot = SI.calcInterpolation('x y')
+  const snapshot = SI.calcInterpolation('x y') // [deep: string] as optional second parameter
 
   // access your state
   const { state } = snapshot
@@ -138,7 +138,7 @@ SI.calcInterpolation('x y z')
 const worldState = [
   {
     id: 'myHero',
-    rad: Math.PI / 4,
+    rad: Math.PI / 2,
     rotationInDeg: 90,
     q: { x: 0, y: 0.707, z: 0, w: 0.707 },
   },
@@ -146,6 +146,33 @@ const worldState = [
 
 // calc interpolation on the client
 SI.calcInterpolation('rad(rad) rotationInDeg(deg) q(quat)')
+```
+
+## Multiple States
+
+```js
+// the players state
+const playersState = [
+  { id: 0, x: 65, y: -17 },
+  { id: 1, x: 32, y: 9 },
+]
+
+// the towers state
+const towersState = [
+  { id: 0, health: 100, type: 'blizzardCannon' },
+  { id: 1, health: 89, type: 'flameThrower' },
+]
+
+const worldState = {
+  players: playersState,
+  towers: towersState,
+}
+
+// create snapshot
+SI.snapshot.create(worldState)
+
+// we only want to interpolate x and y on the players object
+SI.calcInterpolation('x y', 'players')
 ```
 
 ## Vault
@@ -160,7 +187,7 @@ const customVault = new Vault()
 
 ## Compression
 
-You can compress the snapshots manually before sending them to the client, and decompress them when the client receives them. No, compression library is included. You have the freedom to do it however it suits your game best.
+Will be available soon.
 
 ## API
 
@@ -222,10 +249,10 @@ SI.snapshot.create(state: State): Snapshot
 SI.snapshot.add(snapshot: Snapshot): void
 
 /** Interpolate between two snapshots give the percentage or time. */
-SI.interpolate(snapshotA: Snapshot, snapshotB: Snapshot, timeOrPercentage: number, parameters: string): InterpolatedSnapshot
+SI.interpolate(snapshotA: Snapshot, snapshotB: Snapshot, timeOrPercentage: number, parameters: string, deep: string): InterpolatedSnapshot
 
 /** Get the calculated interpolation on the client. */
-SI.calcInterpolation(parameters: string): InterpolatedSnapshot | undefined
+SI.calcInterpolation(parameters: string, deep: string): InterpolatedSnapshot | undefined
 
 // class Vault
 const vault = new Vault()

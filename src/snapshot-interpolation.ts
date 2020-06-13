@@ -65,16 +65,27 @@ export class SnapshotInterpolation {
 
   /** Create a new Snapshot */
   public static CreateSnapshot(state: State): Snapshot {
-    // check if state is an array
-    if (!Array.isArray(state))
-      throw new Error('You have to pass an Array to createSnapshot()')
+    const check = (state: State) => {
+      // check if state is an array
+      if (!Array.isArray(state))
+        throw new Error('You have to pass an Array to createSnapshot()')
 
-    // check if each entity has an id
-    const withoutID = state.filter(
-      e => typeof e.id !== 'string' && typeof e.id !== 'number'
-    )
-    //console.log(withoutID)
-    if (withoutID.length > 0) throw new Error('Each Entity needs to have a id')
+      // check if each entity has an id
+      const withoutID = state.filter(
+        e => typeof e.id !== 'string' && typeof e.id !== 'number'
+      )
+      //console.log(withoutID)
+      if (withoutID.length > 0)
+        throw new Error('Each Entity needs to have a id')
+    }
+
+    if (Array.isArray(state)) {
+      check(state)
+    } else {
+      Object.keys(state).forEach(key => {
+        check(state[key])
+      })
+    }
 
     return {
       id: SnapshotInterpolation.NewId(),
@@ -99,16 +110,24 @@ export class SnapshotInterpolation {
     snapshotA: Snapshot,
     snapshotB: Snapshot,
     timeOrPercentage: number,
-    parameters: string
+    parameters: string,
+    deep: string = ''
   ): InterpolatedSnapshot {
-    return this._interpolate(snapshotA, snapshotB, timeOrPercentage, parameters)
+    return this._interpolate(
+      snapshotA,
+      snapshotB,
+      timeOrPercentage,
+      parameters,
+      deep
+    )
   }
 
   private _interpolate(
     snapshotA: Snapshot,
     snapshotB: Snapshot,
     timeOrPercentage: number,
-    parameters: string
+    parameters: string,
+    deep: string
   ): InterpolatedSnapshot {
     const sorted = [snapshotA, snapshotB].sort((a, b) => b.time - a.time)
     const params = parameters
@@ -140,8 +159,6 @@ export class SnapshotInterpolation {
 
     this.serverTime = lerp(t1, t0, pPercent)
 
-    let tmpSnapshot: Snapshot = JSON.parse(JSON.stringify(newer))
-
     const lerpFnc = (method: string, start: Value, end: Value, t: number) => {
       if (typeof start === 'undefined' || typeof end === 'undefined') return
 
@@ -161,9 +178,26 @@ export class SnapshotInterpolation {
       throw new Error(`No lerp method "${method}" found!`)
     }
 
-    newer.state.forEach((e: Entity, i: number) => {
+    if (!Array.isArray(newer.state) && deep === '')
+      throw new Error('You forgot to add the "deep" parameter.')
+
+    if (Array.isArray(newer.state) && deep !== '')
+      throw new Error('No "deep" needed it state is an array.')
+
+    const newerState: State = Array.isArray(newer.state)
+      ? newer.state
+      : newer.state[deep]
+    const olderState: State = Array.isArray(older.state)
+      ? older.state
+      : older.state[deep]
+
+    let tmpSnapshot: Snapshot = JSON.parse(
+      JSON.stringify({ ...newer, state: newerState })
+    )
+
+    newerState.forEach((e: Entity, i: number) => {
       const id = e.id
-      const other: Entity | undefined = older.state.find(e => e.id === id)
+      const other: Entity | undefined = olderState.find((e: any) => e.id === id)
       if (!other) return
 
       params.forEach(p => {
@@ -176,12 +210,12 @@ export class SnapshotInterpolation {
         const p1 = other?.[p]
 
         const pn = lerpFnc(lerpMethod, p1, p0, pPercent)
-        tmpSnapshot.state[i][p] = pn
+        if (Array.isArray(tmpSnapshot.state)) tmpSnapshot.state[i][p] = pn
       })
     })
 
     const interpolatedSnapshot: InterpolatedSnapshot = {
-      state: tmpSnapshot.state,
+      state: tmpSnapshot.state as State,
       percentage: pPercent,
       newer: newer.id,
       older: older.id,
@@ -192,7 +226,8 @@ export class SnapshotInterpolation {
 
   /** Get the calculated interpolation on the client. */
   public calcInterpolation(
-    parameters: string
+    parameters: string,
+    deep: string = ''
   ): InterpolatedSnapshot | undefined {
     // get the snapshots [this._interpolationBuffer] ago
     const serverTime =
@@ -204,6 +239,6 @@ export class SnapshotInterpolation {
     const { older, newer } = shots
     if (!older || !newer) return
 
-    return this._interpolate(newer, older, serverTime, parameters)
+    return this._interpolate(newer, older, serverTime, parameters, deep)
   }
 }

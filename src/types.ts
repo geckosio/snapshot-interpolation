@@ -12,10 +12,11 @@ export type State = Entity[]
 export interface Snapshot {
   id: ID
   time: Time
-  state: State
+  state: State | { [key: string]: State }
 }
 
-export interface InterpolatedSnapshot extends Omit<Snapshot, 'id' | 'time'> {
+export interface InterpolatedSnapshot {
+  state: State
   percentage: number
   older: ID
   newer: ID

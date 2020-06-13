@@ -145,5 +145,16 @@ test('timeOffset should >= 0', () => {
 test('custom interpolation', () => {
   const shots = SI.vault.get(new Date().getTime() - 50)
   const interpolated = SI.interpolate(shots.older, shots.newer, 0.5, 'x y')
+
+  const x = interpolated.state[0].x
+  expect(x > 0 && x < 10).toBeTruthy()
   expect(interpolated.percentage).toBe(0.5)
+})
+
+test('custom interpolation (with deep)', () => {
+  const shots = SI.vault.get(new Date().getTime() - 50)
+
+  expect(() => {
+    SI.interpolate(shots.older, shots.newer, 0.5, 'x y', 'players')
+  }).toThrow()
 })
