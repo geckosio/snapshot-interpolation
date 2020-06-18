@@ -56,7 +56,7 @@ export class SnapshotInterpolation {
   public get snapshot() {
     return {
       /** Create the snapshot on the server. */
-      create: (state: State): Snapshot =>
+      create: (state: State | { [key: string]: State }): Snapshot =>
         SnapshotInterpolation.CreateSnapshot(state),
       /** Add the snapshot you received from the server to automatically calculate the interpolation with calcInterpolation() */
       add: (snapshot: Snapshot): void => this.addSnapshot(snapshot),
@@ -64,7 +64,7 @@ export class SnapshotInterpolation {
   }
 
   /** Create a new Snapshot */
-  public static CreateSnapshot(state: State): Snapshot {
+  public static CreateSnapshot(state: State | { [key: string]: State }): Snapshot {
     const check = (state: State) => {
       // check if state is an array
       if (!Array.isArray(state))
