@@ -187,7 +187,41 @@ const customVault = new Vault()
 
 ## Compression
 
-Will be available soon.
+You can use the package [@geckos.io/typed-array-buffer-schema](https://www.npmjs.com/package/@geckos.io/typed-array-buffer-schema) to compress your snapshots before sending them to the client.
+
+```js
+// schema.js
+const playerSchema = BufferSchema.schema('player', {
+  id: uint8,
+  x: { type: int16, digits: 1 },
+  y: { type: int16, digits: 1 },
+})
+
+const snapshotSchema = BufferSchema.schema('snapshot', {
+  id: { type: string8, length: 6 },
+  time: uint64,
+  state: { players: [playerSchema] },
+})
+
+export const snapshotModel = new Model(snapshotSchema)
+
+// server.js
+const snapshot = SI.snapshot.create({
+  players: [
+    { id: 0, x: 17.5, y: -1.1 },
+    { id: 1, x: 5.8, y: 18.9 },
+  ],
+})
+
+const buffer = snapshotModel.toBuffer(snapshot)
+send(buffer)
+
+// client.js
+receive(buffer => {
+  snapshot = snapshotModel.fromBuffer(buffer)
+  SI.addSnapshot(snapshot)
+})
+```
 
 ## API
 

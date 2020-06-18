@@ -41,6 +41,7 @@
   "devDependencies": {
     "@geckos.io/client": "^1.5.0",
     "@geckos.io/server": "^1.5.0",
+    "@geckos.io/typed-array-buffer-schema": "0.0.2",
     "html-webpack-plugin": "^4.3.0",
     "jest": "^26.0.1",
     "nodemon": "^2.0.4",
