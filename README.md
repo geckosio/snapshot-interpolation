@@ -34,7 +34,10 @@ If you are interested to learn a bit more about Snapshot Interpolation, watch [t
 
 ## Introduction
 
-Take a look at this [YouTube Video](https://youtu.be/ciNR4t-5-WI)!
+Take a look at these YouTube videos:
+
+- [Short Version](https://youtu.be/-9ix6JxpqGo)
+- [Long Version](https://youtu.be/ciNR4t-5-WI)
 
 ## Game Example
 
@@ -127,7 +130,7 @@ The World State has to be an Array with non nested Objects (expect for Quaternio
 const worldState = [
   { id: 'heroBlue', x: 23, y: 14, z: 47 },
   { id: 'heroRed', x: 23, y: 14, z: 47 },
-  { id: 'heroGreen', x: 23, y: 14, z: 47 },
+  { id: 'heroGreen', x: 23, y: 14, z: 47 }
 ]
 
 // calc interpolation on the client
@@ -143,8 +146,8 @@ const worldState = [
     id: 'myHero',
     rad: Math.PI / 2,
     rotationInDeg: 90,
-    q: { x: 0, y: 0.707, z: 0, w: 0.707 },
-  },
+    q: { x: 0, y: 0.707, z: 0, w: 0.707 }
+  }
 ]
 
 // calc interpolation on the client
@@ -157,18 +160,18 @@ SI.calcInterpolation('rad(rad) rotationInDeg(deg) q(quat)')
 // the players state
 const playersState = [
   { id: 0, x: 65, y: -17 },
-  { id: 1, x: 32, y: 9 },
+  { id: 1, x: 32, y: 9 }
 ]
 
 // the towers state
 const towersState = [
   { id: 0, health: 100, type: 'blizzardCannon' },
-  { id: 1, health: 89, type: 'flameThrower' },
+  { id: 1, health: 89, type: 'flameThrower' }
 ]
 
 const worldState = {
   players: playersState,
-  towers: towersState,
+  towers: towersState
 }
 
 // create snapshot
@@ -197,13 +200,13 @@ You can use the package [@geckos.io/typed-array-buffer-schema](https://www.npmjs
 const playerSchema = BufferSchema.schema('player', {
   id: uint8,
   x: { type: int16, digits: 1 },
-  y: { type: int16, digits: 1 },
+  y: { type: int16, digits: 1 }
 })
 
 const snapshotSchema = BufferSchema.schema('snapshot', {
   id: { type: string8, length: 6 },
   time: uint64,
-  state: { players: [playerSchema] },
+  state: { players: [playerSchema] }
 })
 
 export const snapshotModel = new Model(snapshotSchema)
@@ -212,8 +215,8 @@ export const snapshotModel = new Model(snapshotSchema)
 const snapshot = SI.snapshot.create({
   players: [
     { id: 0, x: 17.5, y: -1.1 },
-    { id: 1, x: 5.8, y: 18.9 },
-  ],
+    { id: 1, x: 5.8, y: 18.9 }
+  ]
 })
 
 const buffer = snapshotModel.toBuffer(snapshot)
