@@ -37,6 +37,7 @@
   "bugs": {
     "url": "https://github.com/geckosio/snapshot-interpolation/issues"
   },
+  "homepage": "http://geckos.io",
   "dependencies": {},
   "devDependencies": {
     "@geckos.io/client": "^1.5.0",
