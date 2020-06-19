@@ -32,10 +32,13 @@ If you are interested to learn a bit more about Snapshot Interpolation, watch [t
 - Easily add **Lag Compensation**.
 - Easily **compress/encode** your snapshots before sending/receiving.
 
+## Introduction
+
+Take a look at this [YouTube Video](https://youtu.be/ciNR4t-5-WI)!
+
 ## Game Example
 
-The [github repository](https://github.com/geckosio/snapshot-interpolation) contains a nice example. Take a look!  
-_I will create a video in the future that explains the example a bit more._
+The [github repository](https://github.com/geckosio/snapshot-interpolation) contains a nice example. Take a look!
 
 ```bash
 # clone the repo
