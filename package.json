@@ -29,7 +29,7 @@
     "compensation"
   ],
   "author": "Yannick Deubel (https://github.com/yandeu)",
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
     "url": "git://github.com/geckosio/snapshot-interpolation.git"
