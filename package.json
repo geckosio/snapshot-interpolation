@@ -11,8 +11,8 @@
     "tsc:watch": "tsc --watch",
     "test": "jest --collectCoverage",
     "build": "rimraf lib && tsc",
-    "bundle":"webpack --config webpack.bundle.js",
-    "prepublish": "npm run build"
+    "bundle": "webpack --config webpack.bundle.js",
+    "prepublish": "npm run build && npm run bundle"
   },
   "keywords": [
     "multiplayer",
