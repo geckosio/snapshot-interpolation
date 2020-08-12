@@ -59,8 +59,19 @@ $ npm start
 
 ## Install
 
+Install from npm.
+
 ```console
 npm install @geckos.io/snapshot-interpolation
+```
+
+Or use the bundled version.
+
+```html
+<script src="https://unpkg.com/@geckos.io/snapshot-interpolation@1.0.1/bundle/snapshot-interpolation.js"></script>
+<script>
+  const { SnapshotInterpolation, Vault } = Snap
+</script>
 ```
 
 ## How to use
