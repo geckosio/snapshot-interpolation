@@ -55,6 +55,9 @@ $ npm install
 
 # start the example
 $ npm start
+
+# play in your browser
+http://localhost:8080/
 ```
 
 ## Install
