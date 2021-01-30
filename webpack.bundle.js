@@ -1,3 +1,4 @@
+const TerserPlugin = require("terser-webpack-plugin");
 const path = require('path')
 
 module.exports = {
@@ -14,5 +15,18 @@ module.exports = {
   },
   module: {
     rules: [{ test: /\.tsx?$/, loader: 'ts-loader' }]
-  }
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          format: {
+            comments: /@license/i,
+          },
+        },
+        extractComments: false,
+      }),
+    ],
+  },
 }
