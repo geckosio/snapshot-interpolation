@@ -28,8 +28,9 @@ export class Vault {
         const snaps = { older: sorted[i], newer: sorted[i - 1] }
         if (closest) {
           const older = Math.abs(time - snaps.older.time)
-          const newer = Math.abs(time - snaps.newer.time)
-          if (newer <= older) return snaps.older
+          const newer = Math.abs(time - snaps.newer?.time)
+          if (isNaN(newer)) return snaps.older
+          else if (newer <= older) return snaps.older
           else return snaps.newer
         }
         return snaps
