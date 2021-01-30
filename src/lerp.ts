@@ -59,38 +59,53 @@ export const radianLerp = (start: number, end: number, t: number) => {
   return result
 }
 
-// http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/
+
+// Adapted from: 
+// https://github.com/mrdoob/three.js/blob/dev/src/math/Quaternion.js#L22
 export const quatSlerp = (qa: Quat, qb: Quat, t: number) => {
-  // quaternion to return
-  let qm: Quat = { x: 0, y: 0, z: 0, w: 1 }
-  // Calculate angle between them.
-  let cosHalfTheta = qa.w * qb.w + qa.x * qb.x + qa.y * qb.y + qa.z * qb.z
-  // if qa=qb or qa=-qb then theta = 0 and we can return qa
-  if (Math.abs(cosHalfTheta) >= 1.0) {
-    qm.w = qa.w
-    qm.x = qa.x
-    qm.y = qa.y
-    qm.z = qa.z
-    return qm
+  let x0 = qa.x
+  let y0 = qa.y
+  let z0 = qa.z
+  let w0 = qa.w
+
+  const x1 = qb.x
+  const y1 = qb.y
+  const z1 = qb.z
+  const w1 = qb.w
+
+  if ( w0 !== w1 || x0 !== x1 || y0 !== y1 || z0 !== z1 ) {
+
+    let s = 1 - t;
+    const cos = x0 * x1 + y0 * y1 + z0 * z1 + w0 * w1
+    const dir = ( cos >= 0 ? 1 : - 1 )
+    const sqrSin = 1 - cos * cos
+
+    // Skip the Slerp for tiny steps to avoid numeric problems:
+    if ( sqrSin > 0.001 ) {
+
+      const sin = Math.sqrt( sqrSin )
+      const len = Math.atan2( sin, cos * dir )
+
+      s = Math.sin( s * len ) / sin
+      t = Math.sin( t * len ) / sin
+    }
+
+    const tDir = t * dir
+
+    x0 = x0 * s + x1 * tDir
+    y0 = y0 * s + y1 * tDir
+    z0 = z0 * s + z1 * tDir
+    w0 = w0 * s + w1 * tDir
+
+    // Normalize in case we just did a lerp:
+    if ( s === 1 - t ) {
+      const f = 1 / Math.sqrt( x0 * x0 + y0 * y0 + z0 * z0 + w0 * w0 )
+      x0 *= f
+      y0 *= f
+      z0 *= f
+      w0 *= f
+    }
   }
-  // Calculate temporary values.
-  let halfTheta = Math.acos(cosHalfTheta)
-  let sinHalfTheta = Math.sqrt(1.0 - cosHalfTheta * cosHalfTheta)
-  // if theta = 180 degrees then result is not fully defined
-  // we could rotate around any axis normal to qa or qb
-  if (Math.abs(sinHalfTheta) < 0.001) {
-    qm.w = qa.w * 0.5 + qb.w * 0.5
-    qm.x = qa.x * 0.5 + qb.x * 0.5
-    qm.y = qa.y * 0.5 + qb.y * 0.5
-    qm.z = qa.z * 0.5 + qb.z * 0.5
-    return qm
-  }
-  let ratioA = Math.sin((1 - t) * halfTheta) / sinHalfTheta
-  let ratioB = Math.sin(t * halfTheta) / sinHalfTheta
-  //calculate Quaternion.
-  qm.w = qa.w * ratioA + qb.w * ratioB
-  qm.x = qa.x * ratioA + qb.x * ratioB
-  qm.y = qa.y * ratioA + qb.y * ratioB
-  qm.z = qa.z * ratioA + qb.z * ratioB
-  return qm
+
+  return { x: x0, y: y0, z: z0, w: w0 }
 }
