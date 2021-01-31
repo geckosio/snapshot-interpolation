@@ -10,6 +10,8 @@
     "strictPropertyInitialization": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["DOM", "ES2015"]
+    "lib": ["DOM", "ES2015"],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   }
 }

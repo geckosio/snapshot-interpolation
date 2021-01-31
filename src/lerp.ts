@@ -1,5 +1,3 @@
-import { Quat } from './types'
-
 const PI = 3.14159265359
 const PI_TIMES_TWO = 6.28318530718
 
