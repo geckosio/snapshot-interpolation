@@ -8,9 +8,9 @@
 import { Quat } from './types'
 
 export const quatSlerp = (qa: Quat, qb: Quat, t: number) => {
-  if ( t === 0 ) return qa;
-  if ( t === 1 ) return qb;
-  
+  if (t === 0) return qa
+  if (t === 1) return qb
+
   let x0 = qa.x
   let y0 = qa.y
   let z0 = qa.z
@@ -21,21 +21,19 @@ export const quatSlerp = (qa: Quat, qb: Quat, t: number) => {
   const z1 = qb.z
   const w1 = qb.w
 
-  if ( w0 !== w1 || x0 !== x1 || y0 !== y1 || z0 !== z1 ) {
-
-    let s = 1 - t;
+  if (w0 !== w1 || x0 !== x1 || y0 !== y1 || z0 !== z1) {
+    let s = 1 - t
     const cos = x0 * x1 + y0 * y1 + z0 * z1 + w0 * w1
-    const dir = ( cos >= 0 ? 1 : - 1 )
+    const dir = cos >= 0 ? 1 : -1
     const sqrSin = 1 - cos * cos
 
     // Skip the Slerp for tiny steps to avoid numeric problems:
-    if ( sqrSin > 0.001 ) {
+    if (sqrSin > 0.001) {
+      const sin = Math.sqrt(sqrSin)
+      const len = Math.atan2(sin, cos * dir)
 
-      const sin = Math.sqrt( sqrSin )
-      const len = Math.atan2( sin, cos * dir )
-
-      s = Math.sin( s * len ) / sin
-      t = Math.sin( t * len ) / sin
+      s = Math.sin(s * len) / sin
+      t = Math.sin(t * len) / sin
     }
 
     const tDir = t * dir
@@ -46,8 +44,8 @@ export const quatSlerp = (qa: Quat, qb: Quat, t: number) => {
     w0 = w0 * s + w1 * tDir
 
     // Normalize in case we just did a lerp:
-    if ( s === 1 - t ) {
-      const f = 1 / Math.sqrt( x0 * x0 + y0 * y0 + z0 * z0 + w0 * w0 )
+    if (s === 1 - t) {
+      const f = 1 / Math.sqrt(x0 * x0 + y0 * y0 + z0 * z0 + w0 * w0)
       x0 *= f
       y0 *= f
       z0 *= f
