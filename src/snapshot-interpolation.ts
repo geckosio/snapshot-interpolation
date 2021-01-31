@@ -7,7 +7,8 @@ import {
   Entity,
 } from './types'
 import { Vault } from './vault'
-import { lerp, degreeLerp, quatSlerp, radianLerp } from './lerp'
+import { lerp, degreeLerp, radianLerp } from './lerp'
+import { quatSlerp } from './slerp'
 
 /** A Snapshot Interpolation library. */
 export class SnapshotInterpolation {

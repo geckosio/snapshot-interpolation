@@ -1,4 +1,4 @@
-const { lerp, degreeLerp, radianLerp, quatSlerp } = require('../lib/lerp')
+const { lerp, degreeLerp, radianLerp } = require('../lib/lerp')
 
 test('lerp should be 0.5', () => {
   expect(lerp(0, 1, 0.5)).toBe(0.5)
@@ -32,23 +32,4 @@ test('radianLerp should be ~-Math.PI / 16', () => {
   expect(rad).toBe(res)
 })
 
-test('quatSlerp 1', () => {
-  const qa = { x: 0, y: 0, z: 0, w: 0.5 }
-  const qb = { x: 0, y: 1, z: 0, w: 0.5 }
-  const q = quatSlerp(qa, qb, 0.5)
-  expect(q.w).toBe(0.6324555320336758)
-})
 
-test('quatSlerp 2', () => {
-  const qa = { x: 1, y: 1, z: 1, w: 1 }
-  const qb = { x: 0.5, y: 0.5, z: 0.5, w: 0.5 }
-  const q = quatSlerp(qa, qb, 0.5)
-  expect(q.w).toBe(1)
-})
-
-test('quatSlerp 3', () => {
-  const qa = { x: 0, y: 0.99999999, z: 0, w: 0 }
-  const qb = { x: 0, y: 1, z: 0, w: 0 }
-  const q = quatSlerp(qa, qb, 0.5)
-  expect(q.y).toBe(0.999999995)
-})
