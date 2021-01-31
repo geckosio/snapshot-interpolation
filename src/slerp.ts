@@ -8,6 +8,9 @@
 import { Quat } from './types'
 
 export const quatSlerp = (qa: Quat, qb: Quat, t: number) => {
+  if ( t === 0 ) return qa;
+  if ( t === 1 ) return qb;
+  
   let x0 = qa.x
   let y0 = qa.y
   let z0 = qa.z
