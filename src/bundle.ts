@@ -1,4 +1,4 @@
-import { SnapshotInterpolation } from './snapshot-interpolation'
-import { Vault } from './vault'
+import { SnapshotInterpolation } from './index'
+import { Vault } from './index'
 
 export default { SnapshotInterpolation, Vault }
