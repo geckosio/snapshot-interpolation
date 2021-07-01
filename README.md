@@ -135,7 +135,7 @@ update() {
 
 ## World State
 
-The World State has to be an Array with non nested Objects (expect for Quaternions). You can name you keys as you want. For degree, radian or quaternion values add `key(deg)`, `key(rad)` or `key(quat)`.
+The World State has to be an Array with non nested Objects (except for Quaternions). You can name you keys as you want. For degree, radian or quaternion values add `key(deg)`, `key(rad)` or `key(quat)`.
 
 ### Linear Interpolation
 
