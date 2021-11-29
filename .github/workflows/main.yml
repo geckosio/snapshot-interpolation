@@ -1,10 +1,6 @@
 name: CI
 
-on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -12,10 +8,11 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        node-version: [14.x, 16.x]
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
@@ -27,6 +24,6 @@ jobs:
           npm install
           npm run build
           npm test
-      - uses: codecov/codecov-action@v2
-        env:
-          CI: true
+
+      - name: Upload code coverage
+        uses: codecov/codecov-action@v2
