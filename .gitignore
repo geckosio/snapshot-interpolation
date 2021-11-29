@@ -1,4 +1,4 @@
-coverage
-lib
-node_modules
-package-lock.json
+/coverage
+/lib
+/node_modules
+/package-lock.json

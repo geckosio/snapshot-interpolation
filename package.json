@@ -41,22 +41,21 @@
     "url": "https://github.com/geckosio/snapshot-interpolation/issues"
   },
   "homepage": "http://geckos.io",
-  "dependencies": {},
   "devDependencies": {
-    "@geckos.io/client": "^1.7.1",
-    "@geckos.io/server": "^1.7.1",
+    "@geckos.io/client": "^2.1.3",
+    "@geckos.io/server": "^2.1.3",
     "@geckos.io/typed-array-buffer-schema": "^1.0.2",
-    "html-webpack-plugin": "^4.5.1",
-    "jest": "^26.6.3",
-    "nodemon": "^2.0.7",
+    "@yandeu/prettier-config": "^0.0.2",
+    "html-webpack-plugin": "^5.5.0",
+    "jest": "^27.4.0",
+    "nodemon": "^2.0.15",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
-    "ts-loader": "^8.0.14",
-    "typescript": "^4.1.3",
-    "webpack": "^5.19.0",
-    "webpack-cli": "^4.4.0",
-    "webpack-dev-server": "^3.11.2"
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.2",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.6.0"
   },
   "funding": {
     "url": "https://github.com/sponsors/yandeu"
