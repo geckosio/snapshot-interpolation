@@ -10,6 +10,11 @@ export class Vault {
     return this._vault.filter(snapshot => snapshot.id === id)?.[0]
   }
 
+  /** Clear this Vault */
+  clear(): void {
+    this._vault = []
+  }
+
   /** Get the latest snapshot */
   get(): Snapshot | undefined
   /** Get the two snapshots around a specific time */
