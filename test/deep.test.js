@@ -13,13 +13,13 @@ const delay = () => {
 const SI = new SnapshotInterpolation()
 SI.interpolationBuffer.set(30) // this is only that low for testing
 
-test('should add 2 shots', async done => {
+test('should add 2 shots', async () => {
   SI.addSnapshot(
     SI.snapshot.create({
       players: [
         { id: 0, x: 0, y: 0 },
-        { id: 1, x: 0, y: 0 },
-      ],
+        { id: 1, x: 0, y: 0 }
+      ]
     })
   )
 
@@ -29,13 +29,12 @@ test('should add 2 shots', async done => {
     SI.snapshot.create({
       players: [
         { id: 0, x: 10, y: 5 },
-        { id: 1, x: 20, y: 50 },
-      ],
+        { id: 1, x: 20, y: 50 }
+      ]
     })
   )
 
   expect(SI.vault.size).toBe(2)
-  done()
 })
 
 test('should interpolate the players array', () => {

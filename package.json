@@ -14,7 +14,7 @@
     "build": "rimraf lib && tsc",
     "bundle": "webpack --config webpack.bundle.js",
     "prepublish": "npm run build && npm run bundle",
-    "format": "prettier --write \"src/**/!(*.d).ts\""
+    "format": "prettier --write \"src/**/!(*.d).ts\" && prettier --write \"test/**/*.js\""
   },
   "keywords": [
     "multiplayer",

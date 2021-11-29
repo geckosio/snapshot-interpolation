@@ -31,5 +31,3 @@ test('radianLerp should be ~-Math.PI / 16', () => {
   const res = ((Math.PI / 4) * 5).toFixed(4)
   expect(rad).toBe(res)
 })
-
-

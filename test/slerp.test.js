@@ -23,12 +23,12 @@ test('quatSlerp 2', () => {
   const qa = { x: 1, y: 1, z: 1, w: 1 }
   const qb = { x: 0.5, y: 0.5, z: 0.5, w: 0.5 }
   const q = quatSlerp(qa, qb, 0.5)
-  quatIsEqual(q, {x: 0.5, y: 0.5, z: 0.5, w: 0.5})
+  quatIsEqual(q, { x: 0.5, y: 0.5, z: 0.5, w: 0.5 })
 })
 
 test('quatSlerp 3', () => {
   const qa = { x: 0, y: 0.99999999, z: 0, w: 0 }
   const qb = { x: 0, y: 1, z: 0, w: 0 }
   const q = quatSlerp(qa, qb, 0.5)
-  quatIsEqual(q, { x: 0, y: 0.9999999975, z: 0, w: 0})
+  quatIsEqual(q, { x: 0, y: 0.9999999975, z: 0, w: 0 })
 })

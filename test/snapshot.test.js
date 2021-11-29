@@ -31,15 +31,12 @@ test('calc interpolated without any data', () => {
   expect(interpolatedSnapshot).toBeUndefined()
 })
 
-test('should create and add snapshot', async done => {
+test('should create and add snapshot', async () => {
   await delay()
-  snapshot = SI.snapshot.create([
-    { id: 'hero', x: 0, y: 0, d: 0, r: 0, q: { x: 0, y: 0, z: 0, w: 1 } },
-  ])
+  snapshot = SI.snapshot.create([{ id: 'hero', x: 0, y: 0, d: 0, r: 0, q: { x: 0, y: 0, z: 0, w: 1 } }])
   id1 = snapshot.id
   SI.snapshot.add(snapshot)
   expect(snapshot).not.toBeUndefined()
-  done()
 })
 
 test('calc interpolated with not enough data', async () => {
@@ -75,12 +72,12 @@ test('worldState should be an array', () => {
       y: 10,
       d: 90,
       r: Math.PI / 4,
-      q: { x: 0, y: 0.707, z: 0, w: 0.707 },
+      q: { x: 0, y: 0.707, z: 0, w: 0.707 }
     })
   }).toThrow()
 })
 
-test('should create and add another snapshot', async done => {
+test('should create and add another snapshot', async () => {
   await delay()
   snapshot = SI.snapshot.create([
     {
@@ -89,14 +86,13 @@ test('should create and add another snapshot', async done => {
       y: 10,
       d: 90,
       r: Math.PI / 4,
-      q: { x: 0, y: 0.707, z: 0, w: 0.707 },
+      q: { x: 0, y: 0.707, z: 0, w: 0.707 }
     },
-    { id: 'enemyOne' },
+    { id: 'enemyOne' }
   ])
   id2 = snapshot.id
   SI.snapshot.add(snapshot)
   expect(SI.vault.size).toBe(2)
-  done()
 })
 
 test('should get interpolated value', () => {
