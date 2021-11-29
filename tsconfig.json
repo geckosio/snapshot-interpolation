@@ -1,17 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2019",
     "module": "commonjs",
-    "declaration": true,
-    "sourceMap": true,
-    "outDir": "./lib",
-    "rootDir": "./src",
+    "moduleResolution": "node",
+
+    "rootDir": "src",
+    "outDir": "lib",
+
     "strict": true,
-    "strictPropertyInitialization": false,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "lib": ["DOM", "ES2015"],
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
-  }
+
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

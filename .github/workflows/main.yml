@@ -19,11 +19,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: npm install, build, and test
+      - name: Install and Build
         run: |
           npm install
           npm run build
-          npm test
+
+      - name: Test
+        run: npm test
+
+      - name: Webpack Bundle
+        run: npm run bundle:test
 
       - name: Upload code coverage
         uses: codecov/codecov-action@v2

@@ -4,7 +4,9 @@
   "description": "A Snapshot Interpolation library for Real-Time Multiplayer Games",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
+  "type": "commonjs",
   "scripts": {
+    "test:ci": "npm i && npm run build && npm test && npm run bundle:tmp",
     "start": "npm run dev",
     "dev": "npm-run-all --parallel tsc:watch example:*",
     "example:server": "nodemon example/server/index.js",
@@ -13,7 +15,8 @@
     "test": "jest --collectCoverage",
     "build": "rimraf lib && tsc",
     "bundle": "webpack --config webpack.bundle.js",
-    "prepublish": "npm run build && npm run bundle",
+    "bundle:tmp": "webpack --config webpack.bundle.tmp.js",
+    "prepublishOnly": "npm run build && npm run bundle",
     "format": "prettier --write \"src/**/!(*.d).ts\" && prettier --write \"test/**/*.js\""
   },
   "keywords": [
