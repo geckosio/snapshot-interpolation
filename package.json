@@ -1,6 +1,6 @@
 {
   "name": "@geckos.io/snapshot-interpolation",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A Snapshot Interpolation library for Real-Time Multiplayer Games",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -16,7 +16,8 @@
     "build": "rimraf lib && tsc",
     "bundle": "webpack --config webpack.bundle.js",
     "bundle:tmp": "webpack --config webpack.bundle.tmp.js",
-    "prepublishOnly": "npm run build && npm run bundle",
+    "preReleaseHook": "prepublishOnly",
+    "prepublishOnly": "npm i && npm run build && npm run bundle",
     "format": "prettier --write \"src/**/!(*.d).ts\" && prettier --write \"test/**/*.js\""
   },
   "keywords": [
