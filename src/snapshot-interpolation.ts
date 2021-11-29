@@ -3,6 +3,10 @@ import { Vault } from './vault'
 import { lerp, degreeLerp, radianLerp } from './lerp'
 import { quatSlerp } from './slerp'
 
+interface Config {
+  autoCorrectTimeOffset?: boolean
+}
+
 /** A Snapshot Interpolation library. */
 export class SnapshotInterpolation {
   /** Access the vault. */
@@ -12,8 +16,11 @@ export class SnapshotInterpolation {
   /** The current server time based on the current snapshot interpolation. */
   public serverTime = 0
 
-  constructor(serverFPS?: number) {
+  public config: Config
+
+  constructor(serverFPS?: number | null, config: Config = {}) {
     if (serverFPS) this._interpolationBuffer = (1000 / serverFPS) * 3
+    this.config = { autoCorrectTimeOffset: true, ...config }
   }
 
   public get interpolationBuffer() {
@@ -82,11 +89,21 @@ export class SnapshotInterpolation {
   }
 
   private addSnapshot(snapshot: Snapshot): void {
+    const timeNow = SnapshotInterpolation.Now()
+    const timeSnapshot = snapshot.time
+
     if (this._timeOffset === -1) {
       // the time offset between server and client is calculated,
       // by subtracting the current client date from the server time of the
       // first snapshot
-      this._timeOffset = SnapshotInterpolation.Now() - snapshot.time
+      this._timeOffset = timeNow - timeSnapshot
+    }
+
+    // correct time offset
+    if (this.config?.autoCorrectTimeOffset === true) {
+      const timeOffset = timeNow - timeSnapshot
+      const timeDifference = Math.abs(this._timeOffset - timeOffset)
+      if (timeDifference > 50) this._timeOffset = timeOffset
     }
 
     this.vault.add(snapshot)

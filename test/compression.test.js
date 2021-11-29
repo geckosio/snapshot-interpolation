@@ -18,7 +18,7 @@ const delay = () => {
   })
 }
 
-const SI = new SnapshotInterpolation()
+const SI = new SnapshotInterpolation(null, { autoCorrectTimeOffset: false }) // false, for testing
 SI.interpolationBuffer.set(30) // this is only that low for testing
 
 const playerSchema = BufferSchema.schema('player', {
