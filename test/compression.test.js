@@ -1,12 +1,5 @@
 const { SnapshotInterpolation } = require('../lib/index')
-const {
-  BufferSchema,
-  Model,
-  uint8,
-  int16,
-  uint64,
-  string8
-} = require('../node_modules/@geckos.io/typed-array-buffer-schema/lib/index')
+const { BufferSchema, Model, uint8, int16, uint64, string8 } = require('@geckos.io/typed-array-buffer-schema')
 
 const tick = 1000 / 20
 
