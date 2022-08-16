@@ -18,7 +18,7 @@
     "bundle:tmp": "webpack --config webpack.bundle.tmp.js",
     "preReleaseHook": "prepublishOnly",
     "prepublishOnly": "npm i && npm run build && npm run bundle",
-    "format": "prettier --write \"src/**/!(*.d).ts\" && prettier --write \"test/**/*.js\""
+    "format": "prettier --write \"src/**/!(*.d).ts\" && prettier --write \"example/**/*.js\" && prettier --write \"test/**/*.js\""
   },
   "keywords": [
     "multiplayer",

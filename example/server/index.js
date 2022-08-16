@@ -14,7 +14,7 @@ io.listen()
 io.onConnection(channel => {
   players.set(channel.id, {
     x: Math.random() * 500,
-    y: Math.random() * 500,
+    y: Math.random() * 500
   })
 
   channel.onDisconnect(() => {
@@ -79,7 +79,7 @@ const loop = () => {
       worldState.push({
         id: key,
         x: parseFloat(player.x.toFixed(2)),
-        y: parseFloat(player.y.toFixed(2)),
+        y: parseFloat(player.y.toFixed(2))
       })
     })
 

@@ -30,8 +30,7 @@ const resize = () => {
   canvas.style.width = `${width * scale}px`
   canvas.style.height = `${height * scale}px`
 
-  canvas.style.margin = ` ${h / 2 - (height * scale) / 2}px 0px 0px ${w / 2 -
-    (width * scale) / 2}px`
+  canvas.style.margin = ` ${h / 2 - (height * scale) / 2}px 0px 0px ${w / 2 - (width * scale) / 2}px`
 }
 resize()
 window.addEventListener('resize', () => resize())
@@ -63,7 +62,7 @@ let keys = {
   left: false,
   up: false,
   right: false,
-  down: false,
+  down: false
 }
 
 channel.onConnect(error => {
@@ -159,9 +158,7 @@ const clientPrediction = () => {
     if (up) player.y -= speed
     if (right) player.x += speed
     if (down) player.y += speed
-    playerVault.add(
-      SI.snapshot.create([{ id: channel.id, x: player.x, y: player.y }])
-    )
+    playerVault.add(SI.snapshot.create([{ id: channel.id, x: player.x, y: player.y }]))
   }
 }
 
@@ -174,10 +171,8 @@ const loop = () => {
       if (player.x + 40 > canvas.width) player.direction = 'left'
       else if (player.x < 0) player.direction = 'right'
 
-      if (player.direction === 'right')
-        keys = { left: false, up: false, right: true, down: false }
-      if (player.direction === 'left')
-        keys = { left: true, up: false, right: false, down: false }
+      if (player.direction === 'right') keys = { left: false, up: false, right: true, down: false }
+      if (player.direction === 'left') keys = { left: true, up: false, right: false, down: false }
     }
 
     const update = [keys.left, keys.up, keys.right, keys.down]
@@ -238,12 +233,7 @@ canvas.addEventListener('pointerdown', e => {
     }
   })
 
-  if (connected && hit)
-    channel.emit(
-      'shoot',
-      { x: clientX, y: clientY, time: SI.serverTime },
-      { reliable: true }
-    )
+  if (connected && hit) channel.emit('shoot', { x: clientX, y: clientY, time: SI.serverTime }, { reliable: true })
 })
 
 document.addEventListener('keydown', e => {
