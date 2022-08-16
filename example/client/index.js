@@ -1,6 +1,6 @@
-import { SnapshotInterpolation, Vault } from '../../lib/index'
+import { SnapshotInterpolation, Vault } from '../../lib/index.js'
 import geckos from '@geckos.io/client'
-import { addLatencyAndPackagesLoss, collisionDetection } from '../common'
+import { addLatencyAndPackagesLoss, collisionDetection } from '../common.js'
 
 const channel = geckos()
 const SI = new SnapshotInterpolation(15) // the server's fps is 15

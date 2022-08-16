@@ -1,6 +1,8 @@
-const { SnapshotInterpolation } = require('../../lib/index')
-const geckos = require('@geckos.io/server').default
-const { addLatencyAndPackagesLoss, collisionDetection } = require('../common')
+import { SnapshotInterpolation } from '../../lib/index.js'
+import { addLatencyAndPackagesLoss, collisionDetection } from '../common.js'
+
+const geckos_module = await import('@geckos.io/server')
+const { geckos } = geckos_module
 
 const io = geckos()
 const SI = new SnapshotInterpolation()
